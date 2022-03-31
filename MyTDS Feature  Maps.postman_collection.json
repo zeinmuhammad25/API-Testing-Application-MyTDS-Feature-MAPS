@@ -1,0 +1,1283 @@
+{
+	"info": {
+		"_postman_id": "b9d154f4-8520-497d-89ed-d75bcf1cdaf8",
+		"name": "MyTDS Maps Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Generate Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.environment.set(\"GEN_TOKEN\", jsonData.data.accessToken);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"clientId\" : \"dGVsa29tZGlnaXRhbHNvbHV0aW9uZDN2\",\n\t\"clientSecret\" : \"Njk1ODQ5ZGUtOWZhYS00YmMzLTlmYjMtMDY2MDM0NDM1YzU5Cg==\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api-dev.telkomdigitalsolution.co/users-management/v2/auth/generatetoken",
+							"protocol": "https",
+							"host": [
+								"api-dev",
+								"telkomdigitalsolution",
+								"co"
+							],
+							"path": [
+								"users-management",
+								"v2",
+								"auth",
+								"generatetoken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.environment.set(\"AUTH_TOKEN\", jsonData.data.accessToken);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GEN_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\":\"DummyAMDBS\",\n\t\"password\":\"Digital2020\"\n}"
+						},
+						"url": {
+							"raw": "https://api-dev.telkomdigitalsolution.co/users-management/v2/auth/login",
+							"protocol": "https",
+							"host": [
+								"api-dev",
+								"telkomdigitalsolution",
+								"co"
+							],
+							"path": [
+								"users-management",
+								"v2",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Management Profile",
+			"item": [
+				{
+					"name": "Add Management Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profilePicture",
+									"type": "file",
+									"src": "/Users/aminudin/Downloads/unnamed.png"
+								},
+								{
+									"key": "profileName",
+									"value": "Aminudin 4",
+									"type": "text"
+								},
+								{
+									"key": "profilePosition",
+									"value": "Backend Developer",
+									"type": "text"
+								},
+								{
+									"key": "profilePOB",
+									"value": "Cilacap",
+									"type": "text"
+								},
+								{
+									"key": "profileDOB",
+									"value": "2020-06-04T00:00:00+07:00",
+									"type": "text"
+								},
+								{
+									"key": "profileEducation",
+									"value": "SMK",
+									"type": "text"
+								},
+								{
+									"key": "nipnas",
+									"value": "2920223",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/management-profile/v1",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"management-profile",
+								"v1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Management Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/management-profile/v1?page=1&size=10&nipnas=2920223&active=true",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"management-profile",
+								"v1"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "nipnas",
+									"value": "2920223"
+								},
+								{
+									"key": "active",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Management Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profilePicture",
+									"type": "file",
+									"src": "/Users/aminudin/Downloads/risman_pic.jpeg"
+								},
+								{
+									"key": "profileName",
+									"value": "Aminudin 6",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "profilePosition",
+									"value": "Backend Developer",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "profilePOB",
+									"value": "Cilacap",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "profileDOB",
+									"value": "2020-06-04T00:00:00+07:00",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "profileEducation",
+									"value": "SMK",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "index",
+									"value": "5",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/management-profile/v1/:profileId",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"management-profile",
+								"v1",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "MP1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Update Management Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"profileId\": \"MP1\",\n        \"index\": 0,\n        \"profilePicture\": \"https://minio-assurance-dev.telkomdigitalsolution.co/tds-customer-maps-public/management-profile/be154de1-770f-4d55-9c5f-a7e4a9c870bf-risman_pic.jpeg\",\n        \"nipnas\": 2920223,\n        \"profileName\": \"Aminudin\",\n        \"profilePosition\": \"Backend Developer\",\n        \"profilePOB\": \"Cilacap\",\n        \"profileDOB\": \"2020-06-04T00:00:00+07:00\",\n        \"profileEducation\": \"SMK\"\n    },\n    {\n        \"profileId\": \"MP2\",\n        \"index\": 1,\n        \"profilePicture\": \"https://minio-assurance-dev.telkomdigitalsolution.co/tds-customer-maps-public/management-profile/2736f241-088c-40cd-9de9-87c66c073743-risman_pic.jpeg\",\n        \"nipnas\": 2920223,\n        \"profileName\": \"Aminudin 1\",\n        \"profilePosition\": \"Backend Developer\",\n        \"profilePOB\": \"Cilacap\",\n        \"profileDOB\": \"2020-06-04T00:00:00+07:00\",\n        \"profileEducation\": \"SMK\"\n    },\n    {\n        \"profileId\": \"MP3\",\n        \"index\": 2,\n        \"profilePicture\": \"https://minio-assurance-dev.telkomdigitalsolution.co/tds-customer-maps-public/management-profile/d491abb5-4507-487a-8981-ba1016484951-risman_pic.jpeg\",\n        \"nipnas\": 2920223,\n        \"profileName\": \"Aminudin 2\",\n        \"profilePosition\": \"Backend Developer\",\n        \"profilePOB\": \"Cilacap\",\n        \"profileDOB\": \"2020-06-04T00:00:00+07:00\",\n        \"profileEducation\": \"SMK\"\n    },\n    {\n        \"profileId\": \"MP4\",\n        \"index\": 3,\n        \"profilePicture\": \"https://minio-assurance-dev.telkomdigitalsolution.co/tds-customer-maps-public/management-profile/5b4fcbb7-3a69-4c9c-ba2e-9c9aebf460ef-risman_pic.jpeg\",\n        \"nipnas\": 2920223,\n        \"profileName\": \"Aminudin 4\",\n        \"profilePosition\": \"Backend Developer\",\n        \"profilePOB\": \"Cilacap\",\n        \"profileDOB\": \"2020-06-04T00:00:00+07:00\",\n        \"profileEducation\": \"SMK\"\n    },\n    {\n        \"profileId\": \"MP5\",\n        \"index\": 4,\n        \"profilePicture\": \"https://minio-assurance-dev.telkomdigitalsolution.co/tds-customer-maps-public/management-profile/437e7d22-760c-44ea-b95a-79e65ba28f89-risman_pic.jpeg\",\n        \"nipnas\": 2920223,\n        \"profileName\": \"Aminudin 5\",\n        \"profilePosition\": \"Backend Developer\",\n        \"profilePOB\": \"Cilacap\",\n        \"profileDOB\": \"2020-06-04T00:00:00+07:00\",\n        \"profileEducation\": \"SMK\"\n    },\n    {\n        \"profileId\": \"MP6\",\n        \"index\": 5,\n        \"profilePicture\": \"https://minio-assurance-dev.telkomdigitalsolution.co/tds-customer-maps-public/management-profile/6d0f9a9e-6171-4549-8df7-a7e472bd193a-risman_pic.jpeg\",\n        \"nipnas\": 2920223,\n        \"profileName\": \"Aminudin 6\",\n        \"profilePosition\": \"Backend Developer\",\n        \"profilePOB\": \"Cilacap\",\n        \"profileDOB\": \"2020-06-04T00:00:00+07:00\",\n        \"profileEducation\": \"SMK\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/management-profile/v1/position",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"management-profile",
+								"v1",
+								"position"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Management Profile By profileId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/management-profile/v1/:profileId",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"management-profile",
+								"v1",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "MP001"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "complaint",
+			"item": [
+				{
+					"name": "Add Complaint",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nipnas",
+									"value": "2920223",
+									"type": "text"
+								},
+								{
+									"key": "complaintTitle",
+									"value": "Aduh Ada Apa nih  1 ?",
+									"type": "text"
+								},
+								{
+									"key": "solution",
+									"value": "ya begitu",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/complaint/v1",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"complaint",
+								"v1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Complaint",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "index",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "complaintTitle",
+									"value": "Aduh Ada Apa nih ?",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "solution",
+									"value": "ya begitu",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/complaint/v1/:complaintId",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"complaint",
+								"v1",
+								":complaintId"
+							],
+							"variable": [
+								{
+									"key": "complaintId",
+									"value": "CS1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Complaint",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/complaint/v1?active=true",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"complaint",
+								"v1"
+							],
+							"query": [
+								{
+									"key": "active",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Update Complaint",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n        {\n            \"complaintId\": \"CS2\",\n            \"index\": 1,\n            \"nipnas\": 2920223,\n            \"complaintTitle\": \"Aduh Ada Apa nih  1 ?\",\n            \"solution\": \"ya begitu\"\n        },\n        {\n            \"complaintId\": \"CS1\",\n            \"index\": 0,\n            \"nipnas\": 2920223,\n            \"complaintTitle\": \"Aduh Ada Apa nih ?\",\n            \"solution\": \"ya begitu\"\n        }\n    ]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/complaint/v1/position",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"complaint",
+								"v1",
+								"position"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Complaint With complaintId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/complaint/v1/:complaintId",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"complaint",
+								"v1",
+								":complaintId"
+							],
+							"variable": [
+								{
+									"key": "complaintId",
+									"value": "CS1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "Get Detail Customer Corporate By Nipnas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/customer/v1/:nipnas",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"customer",
+								"v1",
+								":nipnas"
+							],
+							"variable": [
+								{
+									"key": "nipnas",
+									"value": "99991599557898512.0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add New Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nipnas\": 2908314,\n    \"website\": \"https://facebook.com/\",\n    \"businessType\": \"Impostor\",\n    \"totalEmployees\": \"> 25000\",\n    \"totalBranchCompany\": 10,\n    \"assetValue\": 250000,\n    \"subsidiary\": [\"PT AKU\", \"PT CINTA\"],\n    \"groupCompany\": [\"PT Sejahtere\"],\n    \"aboutCompany\": \"Kami BErjalan disegala bidang\",\n    \"strategicHighlight\": \"<b>Ini test bold</b>\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/customer/v1",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"customer",
+								"v1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Customer By Nipnas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"website\": \"https://facebook.com/amingass.go.id\",\n    \"companyImage\": \"https:akulaku\",\n    \"businessType\": \"Impostorkur\",\n    \"totalEmployees\": \"> 25000\",\n    \"totalBranchCompany\": 10,\n    \"assetValue\": 250000,\n    \"subsidiary\": [\n        \"PT AKU\",\n        \"PT CINTA\"\n    ],\n    \"groupCompany\": [\n        \"PT Sejahtere\"\n    ],\n    \"aboutCompany\": \"Kami Berjalan disegala bidang\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/customer/v1/:nipnas",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"customer",
+								"v1",
+								":nipnas"
+							],
+							"variable": [
+								{
+									"key": "nipnas",
+									"value": "5590328"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add New PIC",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nipnas\": 2908314,\n    \"phoneNumber\": \"082214899172\",\n    \"name\": \"WARYONO WARYONO1\",\n    \"email\": \"amin4udin@gmail.com\",\n    \"role\": \"Decision Maker\",\n    \"duty\": \"PIC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/customer/v1/pic",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"customer",
+								"v1",
+								"pic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update PIC",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phoneNumber\": \"082214899173\",\n    \"name\": \"WARYONO WARYONO\",\n    \"email\": \"amin4udin@gmail.com\",\n    \"role\": \"Decision Maker\",\n    \"duty\": \"PIC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/customer/v1/pic/:picId",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"customer",
+								"v1",
+								"pic",
+								":picId"
+							],
+							"variable": [
+								{
+									"key": "picId",
+									"value": "PIC001"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update PIC Position",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"picId\": \"PIC001\",\n        \"phoneNumber\": \"082214899174\",\n        \"name\": \"WARYONO WARYONO\",\n        \"email\": \"amin4udin@gmail.com\",\n        \"role\": \"Decision Maker\",\n        \"duty\": \"PIC\",\n        \"index\": 0\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/customer/v1/pic/position",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"customer",
+								"v1",
+								"pic",
+								"position"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All PIC",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/customer/v1/pic?page=1&size=10&nipnas=2908314&active=true",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"customer",
+								"v1",
+								"pic"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "nipnas",
+									"value": "2908314"
+								},
+								{
+									"key": "active",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Wallet Shared By Nipnas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nipnas\": 2908314,\n    \"totalExpenditureTelkom\": 25000000,\n    \"totalExpenditureNonTelkom\": 25000000000000000,\n    \"customerShopingDetails\": [\n        {\n            \"companyName\": \"PT Cinta Bahagia\",\n            \"nominalSpending\": 2500000\n        }\n    ],\n    \"note\": \"Ini NOte\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/customer/v1/wallet-shared",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"customer",
+								"v1",
+								"wallet-shared"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Wallet Shared",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"totalExpenditureTelkom\": 200000,\n    \"totalExpenditureNonTelkom\": 110000,\n    \"customerShoppingDetails\": [\n        {\n            \"companyName\": \"PT Cinta Bahagiaa\",\n            \"nominalSpending\": 2700000\n        },\n        {\n            \"companyName\": \"PT Cinta Mas Aji\",\n            \"nominalSpending\": 28000\n        }\n    ],\n    \"note\": \"ggggg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/customer/v1/wallet-shared/:nipnas",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"customer",
+								"v1",
+								"wallet-shared",
+								":nipnas"
+							],
+							"variable": [
+								{
+									"key": "nipnas",
+									"value": "5590328"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Wallet Shared By Nipnas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/customer/v1/wallet-shared/:nipnas",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"customer",
+								"v1",
+								"wallet-shared",
+								":nipnas"
+							],
+							"variable": [
+								{
+									"key": "nipnas",
+									"value": "99991599557898512.0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/customer/v1/role",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"customer",
+								"v1",
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Strategic Hightlight By Nipnas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vision\": \"htmlString 111\",\n    \"mission\": \"htmlString\",\n    \"financialPeformance\": \"htmlString\",\n    \"operationalPeformance\": \"htmlString\",\n    \"businessDevelopmentPlan\": \"htmlString\",\n    \"ivca\": \"imageUri\",\n    \"note\": \"htmlString\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/customer/v1/strategic-highlight/:nipnas",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"customer",
+								"v1",
+								"strategic-highlight",
+								":nipnas"
+							],
+							"variable": [
+								{
+									"key": "nipnas",
+									"value": "5590328"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete PIC by picId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/customer/v1/pic/:picId",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"customer",
+								"v1",
+								"pic",
+								":picId"
+							],
+							"variable": [
+								{
+									"key": "picId",
+									"value": "PIC002"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "media",
+			"item": [
+				{
+					"name": "Upload Image",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/Users/aminudin/Downloads/96081585-e776e700-0eb9-11eb-8f16-1831e6ae3b46.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://reqres.in/api/users?page=2",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "general",
+			"item": [
+				{
+					"name": "generate pdf by nipnas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9000/api/mytds-maps/general/v1/generate-pdf",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"mytds-maps",
+								"general",
+								"v1",
+								"generate-pdf"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

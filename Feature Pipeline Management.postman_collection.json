@@ -1,0 +1,1861 @@
+{
+	"info": {
+		"_postman_id": "dc9730c8-c7bb-4761-8260-0a86f1ca9763",
+		"name": "Pipeline Management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "generate-token-login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"clientId\" : \"dGVsa29tZGlnaXRhbHNvbHV0aW9uZDN2\",\n\t\"clientSecret\" : \"Njk1ODQ5ZGUtOWZhYS00YmMzLTlmYjMtMDY2MDM0NDM1YzU5Cg==\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api-dev.telkomdigitalsolution.co/users-management/v2/auth/generatetoken",
+							"protocol": "https",
+							"host": [
+								"api-dev",
+								"telkomdigitalsolution",
+								"co"
+							],
+							"path": [
+								"users-management",
+								"v2",
+								"auth",
+								"generatetoken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var options = { \r",
+									"  url: 'https://api-dev.telkomdigitalsolution.co/users-management/v2/auth/generatetoken',\r",
+									"  method: 'POST',\r",
+									"  header: { \r",
+									"        'Content-Type': 'application/json'\r",
+									"        },\r",
+									"  body: {\r",
+									"  mode: \"raw\",\r",
+									"  raw: {\r",
+									"        \"clientId\" : \"dGVsa29tZGlnaXRhbHNvbHV0aW9uZDN2\",\r",
+									"\t    \"clientSecret\" : \"Njk1ODQ5ZGUtOWZhYS00YmMzLTlmYjMtMDY2MDM0NDM1YzU5Cg==\"\r",
+									"  }\r",
+									"  }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(options, function(err, response) {\r",
+									"  pm.environment.set(\"getToken\", response.json().data.accessToken)\r",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{getToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "ApplicationType",
+								"type": "text",
+								"value": "app"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"975059\",\n\t\"password\": \"Developer2020\"\n}\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users-management/v2/auth/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users-management",
+								"v2",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJleHAiOjE1ODg4MzU4NzMsImlhdCI6MTU4NjI0Mzg3MywiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNTI0ODM2NTktYjYzMC00YjcxLWFiNWEtYjc2Yjk5MzMwNjhjIiwic3ViIjoiY2FlMTgzZGUtZjBjYy00Njk3LTgxMjYtMDgzNTc0N2FlYTkwIn0.d3EE3lmbSrsifEKTFJFEpgh8FrNaVI_ZJs-udKl1rRM\",\n\t\"accessTokenExpired\":1\n}\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users-management/v2/auth/refreshtoken",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users-management",
+								"v2",
+								"auth",
+								"refreshtoken"
+							],
+							"query": [
+								{
+									"key": "orderBy",
+									"value": "inv",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "s",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Me Profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1ODcwNTg2NDcsImlhdCI6MTU4NjkzODY0NywiaXNzIjoidGVsa29tZGV2IiwianRpIjoiOGNiYzNiNDMtNjJkNS00MGY2LWI4ZGMtOTkyMWM3NzllNGM2IiwicmVmcmVzaCI6ImJjMTYzZWM1LWJhYTAtNGQyYy04ZmJkLTYyZjAzMjIxNzFhNSIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.qJJ7s-GGRafuRaXlSC0VOtvU98wsIMKNW_DofPQYdWVCzicQxunx6dmKbceMUKrRZrR6qQRKjNQX4LzSoUQe0H9S2tDy2XARMfekZ3Xa9pB0FOJP_wmS3jmVuOjnhn-vu06ZHpzNZEi4kKH1ugB_g6x5oZ91MDxh2MTVgl-Gd1iFuoR1m5-YzRm5omv-aXwZ2fNiwqYm8wwcym8rVWaQ4w2PBz5Es_44Tt5WFjgx1rgQLLl8RK4fM4jPSPQTS4jPzpTzHMqFXiW5k0wL19q8OKZhfA3wRBCL2x_zto0vfB7mlMM2CpAbdDyWIN2GTDJVDmTZ9ARoRjxu9BjJSMYwl-1B9D23j9JC0C1MquGRjK0pySEsH_XIiQfxc14AXa0RMXn4CdO54ZoU9b3jzGziBf5pzjBq2v3Mk4jTcJVWGIHAR_S9hleoL366_F96E9pG5le-mbzBWLcREXuZlddvixSmKLCxm_yLiyz1PZ5vYwE9Io_Yyv93HMumA5SiCsJDGzlF4ntpIagwWbwlES3FGH0XSB8ngCg_wBkFPlLwTnpLW1ZujU7pCDjsSAfysKPl3wPczsbcaUFnTH2jR0_10gQUM34b6C0FAQOV8R40FpSH4ujqad83zl7YB05hiuLrWTgwh4e7PCMAjyyYH4eLDgejqi0jUezIDGWCqodIMAM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users-management/v2/profile",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users-management",
+								"v2",
+								"profile"
+							],
+							"query": [
+								{
+									"key": "orderBy",
+									"value": "inv",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "s",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1ODcwNDQ0NTUsImlhdCI6MTU4NjkyNDQ1NSwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNThjMzAyYWItMzRmMy00NWY5LThiNTItYmJkNzBiZjJhY2MzIiwicmVmcmVzaCI6IjRhOTYyYzU4LWRjODItNDBkNi04MWRhLWZlZDY2ZjQwMzkzOSIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.Y_05y-jMlhFC5EWAUJnxI2A6YU6IrTrERH-RMB6-GmGVFZ7WQCQsmPHvZ0-EIbGscYLM1Wci2wGlE36qZRGky2E68hSvsuJ-f5a2RH8Ss6966_DLGHvfkBA7CcwSTDRwntOs5e7ly7C0nu_gTlBn389P-Du9MLN7sGByghMABQMe5_kUu6UQ3qAqWmUhgLmSHcUDxGwTCICXRZH_dGYhNa7vjOMs95wTTPd0ND9MV4g_BLc_39fcejPbzG39qqvxVTQefAymb9rsyDArcvH3kpUwj_Y9DCFvgZxNxRTq-_tmhZS4hTP4N5Kby_ZSEq9Emx5pHZHU58LuP3-qxKhrnrToukefXBQT2rqUu3gGuN-fRKKuoj5tlQcbHDmkl0n7l9oCa-nIUjiUjgARrLB6Afz5yzAkBtWRJa1fySPJCdmT29aYFant-TAmAX6DTKGWO0uqdFtDgLNTllgkEw-HaUOmHAiCQP25_gYooq2mK-pvMxOjtHKEOTMWrzp5kOyF03clIjgi-qXJqXX4Tkl82ote8h8NTfX35gRCl6JS8Bvok1kXLIupeIY4i0GFgfeM2ME_JGCx6NrxHJLqbZqnz12prVRPT57UaVggFSE7nHPLZ552Ueo9WubW7X1EkLSemAXJFigEb0856wvtIs4QQQLn-fqxFSB1Wrx5julQ1vc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\n  \t\"applicationType\": [\n            \"web\",\n            \"app\"\n        ],\n        \"createdAt\": \"2020-03-09 13:15:19.68884766 +0700 WIB m=+4003.935740156\",\n        \"updatedAt\": \"\",\n        \"createdBy\": \"\",\n        \"updatedBy\": \"\",\n        \"isActive\": true,\n        \"metaData\": {\n            \"fullName\": \"AKUN TEST AM\",\n            \"location\": \"\",\n            \"phoneNumber\": \"081316050318\",\n            \"company\": {\n                \"id\": \"\",\n                \"name\": \"\",\n                \"category\": \"NON TELKOM GROUP\",\n                \"subCategory\": \"\"\n            },\n            \"ccHandled\": [\n                {\n                    \"nipnas\": 3705763,\n                    \"corporateClientName\": \"BANK RAKYAT INDONESIA (PERSERO)\",\n                    \"segment\": \"\",\n                    \"location\": \"\",\n                    \"witel\": \"\",\n                    \"divre\": \"\",\n                    \"startHandled\": \"\",\n                    \"endHandled\": \"\",\n                    \"ccRemote\": \"MAIN\"\n                },\n                {\n                    \"nipnas\": 4600005,\n                    \"corporateClientName\": \"PT. WIRA ARTA TELEMATIKA\",\n                    \"segment\": \"BMS-1\",\n                    \"location\": \"\",\n                    \"witel\": \"\",\n                    \"divre\": \"\",\n                    \"startHandled\": \"\",\n                    \"endHandled\": \"\",\n                    \"ccRemote\": \"MAIN\"\n                }\n            ],\n            \"divisionCode\": \"\",\n            \"division\": \"\",\n            \"unit\": \"\",\n            \"subUnit\": \"\",\n            \"jobTitle\": \"\",\n            \"photo\": \"\",\n            \"role\": {\n                \"roleId\": \"account_manager\",\n                \"roleName\": \"Account Manager\",\n                \"roleChilds\": [],\n                \"apps\": [\n                    {\n                        \"appId\": \"assurance\",\n                        \"appName\": \"Assurance\"\n                    },\n                    {\n                        \"appId\": \"complex\",\n                        \"appName\": \"Complex\"\n                    },\n                    {\n                        \"appId\": \"buying\",\n                        \"appName\": \"Buying\"\n                    },\n                    {\n                        \"appId\": \"catalog\",\n                        \"appName\": \"Catalog\"\n                    },\n                    {\n                        \"appId\": \"delivery\",\n                        \"appName\": \"Delivery\"\n                    }\n                ]\n            },\n            \"segment\": \"BMS-1\",\n            \"customerAccountNumber\": \"\",\n            \"statusInvitation\": \"\"\n            \n        }\n    }"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users-management/v2/update/4bb8a881-cf2c-413f-8f3e-83bb0ff39228",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users-management",
+								"v2",
+								"update",
+								"4bb8a881-cf2c-413f-8f3e-83bb0ff39228"
+							],
+							"query": [
+								{
+									"key": "orderBy",
+									"value": "inv",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "s",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjkxMDEzM0B0ZWxrb20uY28uaWQiLCJleHAiOjE1OTk4MzA3NDYsImlhdCI6MTU5OTcxMDc0NiwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiMzkzYmIwZWMtYjU4YS00ZjEwLTgxMzAtYzhlODk2NWE2ZmI0IiwicmVmcmVzaCI6IjY1NDgwMTlmLWZmZmMtNDYxNC1hYTUzLTAwODQwODRmNDljYSIsInN1YiI6IjBiNWEzYjllLTgyMjItNDM3OC04OTNiLTgxNDVlNjNmOGM4NCJ9.KAGh6nzwRiT5pait2QpjIZY1RJtl0te2PAiQ9L9JlpPUNmtXiLQ9uq7RLnHcgFzsfyA9Gkf9rIRkvVsvO1budAnz4wzzIlWx6yDLO1tcmPwQU3cH8V9RhGju7Vx9teiwRZ262jUwS0_0XpwCooXuDaqBJRAPGQSc86YAADIUPXQmGGUMz-NyVDuZh3Hg1z-ANSd0MvCkbFBn1kAI0sAcVjGY-bNrniKD6x-iwdzERTk5WUsc4tsLhuFCBa2Wgn4iR0WuRqjiIx9s116snyOllzjBjeStxEnf3A9kysTU7Y-CFjC_z9_rSWufjCqwZ7wTj2mAzPOt92qXB1Za7V2nmczgeDMwXDuLLtD7oF9FMFQBO63pY8NOeEUXuIDAYgsp2cJI8mO3y07CWwD3LH74l3tJj0sFrv5WeuN_5CNTBlSws0_QSNDClA44DDreGIRlkQGsIRUZuHm2G7BNGfdAyPs2BXHDqyed5HGQn011h-Njl6ACMO-PnSTTQ6Ml7PXdbkUqducNkMqk8_RDY66bc6rnKvQuFIEL5pKQ1V65P4xtH6Z4qsKzG_xJQb5nCJNN200j-tXh9p_jxqT6aV1tJRMZSGHUm62re9BrZ8j3uu2ZkvUrrPNAsHi4qPRIvOk7u9NpPselDoT8Tas-nqEtE90XxW_BcQONdqfout4aYBE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/users-management/v2/profile",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users-management",
+								"v2",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "General",
+			"item": [
+				{
+					"name": "list-phone-codes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTk2MTk4NTcsImlhdCI6MTU5OTYxODA1NywiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNTY2N2E1N2MtOTNmYy00NDQ4LTk2YjgtYTRiM2JiZjQ0ZjUyIiwicmVmcmVzaCI6ImFmYWRkNzQ5LTEyMDEtNDdhZC05MzFhLWY3YTU2ZmU3YTJmNCIsInN1YiI6IjlmMTUxYWFlLTBiODYtNDFmNS05ZjMwLWUwZjBhNWY4YjE5MCJ9.E7pSX46uPKyFpPm0Y9Y1RcPqfplaxkU2TYHiPDwHN2mKk1FuBfmykvPEe9CRcspMRWpYSm_QopieTzsXVVCP2U45Al95k_cg9q8uKpw47tmdDYN4T7jPwBHYW5GgG1Gb9yXrvE4GJPIdfnS3BQlrspW-BHCKOm7RQ8QDGOeW6D_kD4UW8UviNM-lgtSgsqzKiTr1XvwOjA0lT-67jZLV8hY9CFc5e8j1QKx0U5-poWEgRp2KI2Xn-B04aIv1KiYuugQBVOANTXI_eYGTE0G35dUFF9p0vl0pTFLdZ6_gMXfD2zJ-tJDEg7zSh3whp2l35txdYH6163pzykxMKgnfINoQN0m1vv-1LS31a28SVF5ShjOjioTtZifNIzGiKTDQmtH8arO4wQs-bO1_7BotkyiBZydGPYZsdGojwbc5TBJwXJY00eE-c4WK0hkW7EAj8Zz_CBEyWBqpjsRNSrloXmsvJ_voADxa6ACwI3dFbYZcb0nps17Tn1ZEhvw3VDx3IU1Wgt6YT91zGEzFoDce7HYtRjuv-4YUUqxxlIrkWXsbi6LKztKqMWZ-Fki0UJwlw1Muoc1Ghdw21--2_LiofmFpzXi_qGSkdS19gM5afWt2SM32URh8W9_9Ub3kdwW3rrIXp3DCQZdA0TR_8jjn10i9t31HBsNc24_BuR1-h1s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/opportunities/general/v1/phone-codes",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"opportunities",
+								"general",
+								"v1",
+								"phone-codes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list-term-of-payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTk2MTk4NTcsImlhdCI6MTU5OTYxODA1NywiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNTY2N2E1N2MtOTNmYy00NDQ4LTk2YjgtYTRiM2JiZjQ0ZjUyIiwicmVmcmVzaCI6ImFmYWRkNzQ5LTEyMDEtNDdhZC05MzFhLWY3YTU2ZmU3YTJmNCIsInN1YiI6IjlmMTUxYWFlLTBiODYtNDFmNS05ZjMwLWUwZjBhNWY4YjE5MCJ9.E7pSX46uPKyFpPm0Y9Y1RcPqfplaxkU2TYHiPDwHN2mKk1FuBfmykvPEe9CRcspMRWpYSm_QopieTzsXVVCP2U45Al95k_cg9q8uKpw47tmdDYN4T7jPwBHYW5GgG1Gb9yXrvE4GJPIdfnS3BQlrspW-BHCKOm7RQ8QDGOeW6D_kD4UW8UviNM-lgtSgsqzKiTr1XvwOjA0lT-67jZLV8hY9CFc5e8j1QKx0U5-poWEgRp2KI2Xn-B04aIv1KiYuugQBVOANTXI_eYGTE0G35dUFF9p0vl0pTFLdZ6_gMXfD2zJ-tJDEg7zSh3whp2l35txdYH6163pzykxMKgnfINoQN0m1vv-1LS31a28SVF5ShjOjioTtZifNIzGiKTDQmtH8arO4wQs-bO1_7BotkyiBZydGPYZsdGojwbc5TBJwXJY00eE-c4WK0hkW7EAj8Zz_CBEyWBqpjsRNSrloXmsvJ_voADxa6ACwI3dFbYZcb0nps17Tn1ZEhvw3VDx3IU1Wgt6YT91zGEzFoDce7HYtRjuv-4YUUqxxlIrkWXsbi6LKztKqMWZ-Fki0UJwlw1Muoc1Ghdw21--2_LiofmFpzXi_qGSkdS19gM5afWt2SM32URh8W9_9Ub3kdwW3rrIXp3DCQZdA0TR_8jjn10i9t31HBsNc24_BuR1-h1s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/opportunities/general/v1/term-of-payment",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"opportunities",
+								"general",
+								"v1",
+								"term-of-payment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-list-next-process",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1ODk5NjkzMTgsImlhdCI6MTU4OTk2NzUxOCwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiZjM0NGYwY2YtMDM1OC00ZTA1LThlMzUtYmU4NjI2N2ExODdmIiwicmVmcmVzaCI6IjU3NDE4Yzk3LTg5NWYtNGI1My05ZTM0LWY1Y2JkNWI0YzdiMSIsInN1YiI6ImNhZTE4M2RlLWYwY2MtNDY5Ny04MTI2LTA4MzU3NDdhZWE5MCJ9.fimvZf5MWq4sqZD5wGr6NGavbdGXcp8pIVoOo7DHSB6X8P0XVlWl9LziuGJqScXIM2FPKpmONLdLgYxAsYC7tXRxOPjq6F0gq0HibTAO15V-GWdXI61WCb56Tf7JVFCTJnQviLu8KKEsb_Xd6A-EUSsJA9KtV8qTjKmk0EKI-UBFutiNRGdSfo1U1qBzypyOhW94jZ0R3xavRvNhJzc6lkI6i-AEGevXVK8VwfA78_ND72bmxkt0wsZv7JaBuwwmV436zWwLlEVnr4XPZRpU8viHwbwveBk5jcSeQO_eecBQOsVqNnZy5J0ovJGvp5WJJl8ypWU1fkTHjvGdi2sP6bzcW_xkTcXh29Fsw8a2Z8DfkUWMxkzXP1MZZ0Po-49-lJiKaOBDLVaDlZ1hwOkZ6zNxoy7Ct402I6NhnyHxszMFN7Ly7H896XWpuQn76Veyr38zxLtdlgR-2kEADv4CnebPedatWNFO4A3RuOGtKyVX9qaI1ahf_FMctiW-x0HCuGyRgrdYpC4j1QqN9RByCELCnpvrZhcTiSIw-g5ZJfXU-Q48EI_NvwDym_6VGaGFlW9yIPTmM4p4AqcB6P6vyGH7HctiwmqsKDbhE4yV7Kawues6IVT7x4U4Q967kct1-NiGv-E6tDoAz5IO6VR3zYg5Hak1AbfTulbcPlKfzgw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/opportunities/general/v1/project-process/:projectId",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"opportunities",
+								"general",
+								"v1",
+								"project-process",
+								":projectId"
+							],
+							"variable": [
+								{
+									"key": "projectId",
+									"value": "PRO-975059-4054405799"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-win-factor",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTQxNzc4MTAsImlhdCI6MTU5NDE3NjAxMCwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiMmMyNzQ1YjItZjk4NC00NTU5LTllMzgtODRiNDU3Y2NjY2JhIiwicmVmcmVzaCI6IjI5M2IxYTZmLTUyOTUtNGI5MS05NmMwLTM5YzkxNDJjZDk5ZSIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.C3XE8JwXG_EulQB00CC2Ku4gnO5aKf9fstx0LnX4Z9ZiP9Hz00mc79Pj6zLxGceBx36Hz2HewCIHljoPRDZ6eQrZ29-iYVgd5majr0VDUw_GWF_bhtd2UH4WCJ3236dhzDaplYLR_fFD6HaEL4WAxJaPkzsMw2i1fYqtTtOkQ32ZL2ae24CFidRqcVRDqi-a3fljMVpcCEmXOpCSTyY_j8I8kjcEULbY-Kq842adZ51tX3nrigZ_6wDlf3N7NZDfxhKN1T2xv_4BOGWTXEyDzYl0IsThXkyh3Cxg6cf6-fRteufZHfIZnDx_skGw2Fr6XMH1VJjn7RaSI825AA1de_JyT6Tz68j76_FX15oKl5d_YMonoksflvm5Nd_4JTlS4APje03Qy1G0lyNHxbLnTB5GgrmsNEmobRsvHJ3uCES0Z7j71JtmrxKo1HTBrf60IykccPRZDvzxsjJYV1ovYgkP8fZASdxsvPD-fnRC27IFGTEbciwIz9gsiHqTO8hljCfZZSNC9thJMbCxLyLO5ck2qp0nI21g6yKghVALxrg1WPsjd_aN9YDQlR1xSGk6QI8kI9B6_HbpcQFccgNGvCaLE9usoNI_eA69dEkPSqkw1bvasG3bcIy_DrAvt_1K2j2mlB7mdMDh6WegIoqVRMwZ1AIyi5JehMU9ZEjxgV4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/opportunities/general/v1/win-factor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"opportunities",
+								"general",
+								"v1",
+								"win-factor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-cancel-factor",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTQxNzc4MTAsImlhdCI6MTU5NDE3NjAxMCwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiMmMyNzQ1YjItZjk4NC00NTU5LTllMzgtODRiNDU3Y2NjY2JhIiwicmVmcmVzaCI6IjI5M2IxYTZmLTUyOTUtNGI5MS05NmMwLTM5YzkxNDJjZDk5ZSIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.C3XE8JwXG_EulQB00CC2Ku4gnO5aKf9fstx0LnX4Z9ZiP9Hz00mc79Pj6zLxGceBx36Hz2HewCIHljoPRDZ6eQrZ29-iYVgd5majr0VDUw_GWF_bhtd2UH4WCJ3236dhzDaplYLR_fFD6HaEL4WAxJaPkzsMw2i1fYqtTtOkQ32ZL2ae24CFidRqcVRDqi-a3fljMVpcCEmXOpCSTyY_j8I8kjcEULbY-Kq842adZ51tX3nrigZ_6wDlf3N7NZDfxhKN1T2xv_4BOGWTXEyDzYl0IsThXkyh3Cxg6cf6-fRteufZHfIZnDx_skGw2Fr6XMH1VJjn7RaSI825AA1de_JyT6Tz68j76_FX15oKl5d_YMonoksflvm5Nd_4JTlS4APje03Qy1G0lyNHxbLnTB5GgrmsNEmobRsvHJ3uCES0Z7j71JtmrxKo1HTBrf60IykccPRZDvzxsjJYV1ovYgkP8fZASdxsvPD-fnRC27IFGTEbciwIz9gsiHqTO8hljCfZZSNC9thJMbCxLyLO5ck2qp0nI21g6yKghVALxrg1WPsjd_aN9YDQlR1xSGk6QI8kI9B6_HbpcQFccgNGvCaLE9usoNI_eA69dEkPSqkw1bvasG3bcIy_DrAvt_1K2j2mlB7mdMDh6WegIoqVRMwZ1AIyi5JehMU9ZEjxgV4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/opportunities/general/v1/cancel-factor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"opportunities",
+								"general",
+								"v1",
+								"cancel-factor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-lose-factor",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTQxNzc4MTAsImlhdCI6MTU5NDE3NjAxMCwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiMmMyNzQ1YjItZjk4NC00NTU5LTllMzgtODRiNDU3Y2NjY2JhIiwicmVmcmVzaCI6IjI5M2IxYTZmLTUyOTUtNGI5MS05NmMwLTM5YzkxNDJjZDk5ZSIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.C3XE8JwXG_EulQB00CC2Ku4gnO5aKf9fstx0LnX4Z9ZiP9Hz00mc79Pj6zLxGceBx36Hz2HewCIHljoPRDZ6eQrZ29-iYVgd5majr0VDUw_GWF_bhtd2UH4WCJ3236dhzDaplYLR_fFD6HaEL4WAxJaPkzsMw2i1fYqtTtOkQ32ZL2ae24CFidRqcVRDqi-a3fljMVpcCEmXOpCSTyY_j8I8kjcEULbY-Kq842adZ51tX3nrigZ_6wDlf3N7NZDfxhKN1T2xv_4BOGWTXEyDzYl0IsThXkyh3Cxg6cf6-fRteufZHfIZnDx_skGw2Fr6XMH1VJjn7RaSI825AA1de_JyT6Tz68j76_FX15oKl5d_YMonoksflvm5Nd_4JTlS4APje03Qy1G0lyNHxbLnTB5GgrmsNEmobRsvHJ3uCES0Z7j71JtmrxKo1HTBrf60IykccPRZDvzxsjJYV1ovYgkP8fZASdxsvPD-fnRC27IFGTEbciwIz9gsiHqTO8hljCfZZSNC9thJMbCxLyLO5ck2qp0nI21g6yKghVALxrg1WPsjd_aN9YDQlR1xSGk6QI8kI9B6_HbpcQFccgNGvCaLE9usoNI_eA69dEkPSqkw1bvasG3bcIy_DrAvt_1K2j2mlB7mdMDh6WegIoqVRMwZ1AIyi5JehMU9ZEjxgV4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/opportunities/general/v1/lose-factor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"opportunities",
+								"general",
+								"v1",
+								"lose-factor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create-customer-account-dbs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTg3MDMyODcsImlhdCI6MTU5ODU4MzI4NywiaXNzIjoidGVsa29tZGV2IiwianRpIjoiOGJiNjE4NDEtMDRjMC00MGRlLThjNTUtNTUzY2IwNTc4ZjQ1IiwicmVmcmVzaCI6IjQxM2JkODNiLWYzNWItNDZkZi04ZDFjLWZmZDI0NjM0ZGIwOCIsInN1YiI6ImNhZTE4M2RlLWYwY2MtNDY5Ny04MTI2LTA4MzU3NDdhZWE5MCJ9.kSANvHf7GM6HJb_nL0JbAtNFgkA1xOhcCTATMGnrUW_Z12tb-sJgAnq2S_fQiI4lDLNXsAhPxcS7WMRivV1a9yLVmyva56gJbmI6iYBUOULqpfo6w68QKlu7xXqVRBa2B55rmNM7r9iEteMaRdnOq5xCsHvKiUpEs_HBsZ8Y2oQ57P-697jyESBpe9BnJvJqT2YDves8g6NScdjlY2rB6Q2tDWOhVUUFnKSRITBPSJXealLl_cNtCncV-85j5lE9PCo88aJbj4kAgBSzosCloy5M7a9pWMB0tC4WfgilkLtyWqD6Jokp1_ScVHiBCxKMOXP_Mrg4eOtarJ4fDXs12kH4iuCX_OdTeCKrSA4mTvYA2jyLCtOeZ9m0cL3AEiHu6Qhx8b-oyQpllbiP3fdlRT30aaXIr03b9Dbj9V6sSdThHL6KIkUy2xdl4Hhrpy4FwZguelBkEXgqkRqFzEDLj6DSjHyAdn19F407-reHDeWYWCu4zbptfLJ9Tk11TYydbjxJ-jYSvwj0qadtEIxAtJkGQoSWe7riOpm6wKkjq21Q7hPn1N8eda9ekNRQmslj8nUBwmcfiv4urNtCz1SFe-IHA2ZboyldHJWdpnTMN10J18FNmGXOzNJkqJl_lAB6AoqFSbN5O1Pwplh1u10_js8yfEHmy2e1WUvOGyldu0g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerAccountName\": \"PT TEST TEST\",\n    \"subSegment\": \"BUSINESS SERVICE & HOSPITALITY\",\n    \"segmentKey\": \"HBS\",\n    \"division\": \"DBS\",\n    \"witel\": \"Telkom ACEH\",\n    \"pic\": [\n        {\n            \"name\": \"Marlina\",\n            \"duty\": \"QA\",\n            \"phoneNumber\": \"628123456789\"\n        }\n    ],\n    \"location\": \"Jalan Merdeka 1 JKT\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/opportunities/general/v1/customer-account",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"opportunities",
+								"general",
+								"v1",
+								"customer-account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-dbs-ca-by-nipnas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTgyNDYwNzcsImlhdCI6MTU5ODI0NDI3NywiaXNzIjoidGVsa29tZGV2IiwianRpIjoiYTFhMGMxMWUtZTBiNi00NjNkLTliNTctZDM3MTFlNzk1ODA3IiwicmVmcmVzaCI6ImVlNWU3NTIwLWFkYTctNDI3MS1hMjFmLTliNzJkNzYxNTYzYyIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.f7gdcKpj4mb3fJ0qHSDPYpSnt9jvv-ePjpyEbaDsbXMnTDq3rv4eWm-NNu26JAuuyNxPh9yVO5xRt9GNJoK0BDR98_6j72gRL1847FnX1UKKWTaYIlLn8NoIPqlnQ4WQ_wCVhLNbf5rbdX3kDDY4gnlX4VEypPpxVifOOhzQaavVbPtLNMAlt3WSexI9mw-jgcyLeostRXU6LHVFGvQE7Q4UGJEPzr4cc6o1YPFNO8HiAqigJuIzx_aCmDkWiG359GjK_sDM6_TM8TkHX73IoSstf4QOoty0zzMK_gweoHRYq8QWko177PqSdnLb1srTVc8gGeOcflqOg6c20aXdqSbCY65hsitjK_iSsmyzURthsYTu9zaDVH7xXGhQpn_RpS6pw9Z6UZrbtLgDOfxp0kCudFP0ZvAZk3tjyN0kSl3sKghDPamAbM1f5OiH2096zBXO8kMBWZSmnUPWL8idFpKvoIM2J4KdIzkMuXs0Pwz8Yosbag4SW5fQyr9XF6AapbDtDlIjNuv56x-6sPfZpPImH1MSbeFib4a4LX41Q_zSaGGXN0546zUZDGaxEY1Ohn4iikfnwOf0NFUp-CxPKoWnlm8rpAZ9ic4Mnhc4D2I40FyPOcpUCskshKLaJP9uulvDXxUnjuKDu-hYGlAZxWmrjL704wKVCFToo-HDlnI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/opportunities/general/v1/customer-account/:nipnas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"opportunities",
+								"general",
+								"v1",
+								"customer-account",
+								":nipnas"
+							],
+							"variable": [
+								{
+									"key": "nipnas",
+									"value": "99991598243599000"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-list-witel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTgzMjE3MTAsImlhdCI6MTU5ODMxOTkxMCwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNzQxMDc5MDItNWE4Yy00YTcyLWJiOWMtNTFkNmE3NmY0Y2ZkIiwicmVmcmVzaCI6IjNjM2E5ZjJkLWJmOWUtNDc2OS04NDc3LTY2YjEzMTE1YjNmOSIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.I0BXiK-jp8-X_gg3iPXrLmM_cAwpcC4Vk4kOAxhfZV-84wjCQ0yJSUpVbDT9Irzmtl3MSbM79w6AEJ6kvSVSUCtd1WUl7RLlvSAkhQWyG5zfwh44uVIY4hpgJrzZARHVFj3TjZXwCx5B0k2Phz6fsui8DqVg9jsO002eKUgBhtZGJjDWndbDtpKVsAdBVo_MHWijFcihpplvOz83SvAxOkFcbCvXAt01faAjWTjB5wXgkn0n9l6J-4PDFBEye7A90ldHjXhjFi27XOFCTo2tDQNMg5IezCfoU_AEtvANbF7yqZhKs-Qk9Mgnuc4C_DDwGeV6cFFxBHHigyuQcGoe5yEnIG5ryqWHSHHX0nEf6Ojt-Xq3fweRvhL8DgosHrvd0BRrj1vN0NWipHCIFLeriwbE2YQjOlHYNpFYhrYIe4hd7D-Qk5obCrFiQHkTwrRLUcnakgRf0kY2cpEXzEysVb7vEOQK1dzAw5dbC6pEn9R3kQh9iL_vfrCHbW6IdTNr8EoHs2FbalGEE0jDb0dquZhFVKuXwjPVnI_bUUdBQ_PQoszyTtqacsBuhRHjcGe_UFD-CNyM-ZjF3NRWLpFl-4maMcYzcEwplOyPXLsV93ZVrMSc4H_Owzs36WrcUB7BILs_xRNGgeFUH_y2rj63AJGsHvdFg0vqNkG8ntVw3vM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/opportunities/general/v1/witel",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"opportunities",
+								"general",
+								"v1",
+								"witel"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "ran",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-list-ca-ncx",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE2MDI0ODAxMjcsImlhdCI6MTYwMjQ3ODMyNywiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNTE0YTJiOGEtZGNiZS00YzZjLThjMDEtOTVhYjlhNzFlNzNhIiwicmVmcmVzaCI6IjYzNmQ1MDE3LWNmNDQtNDRmNS05ZTM4LTA3NmU5MjRmZmJmMyIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.Rjd4_P56sMZZy3PGlbxYlx2GMNrptjPetm8qcfd2g9Fu2TWuJ46GlPvER8shAYwHKVxG5vaane6pWg_SpVPNTJkOd00epVIhigijAX7-SXQ60_NsND41MTTm_s8yYiL8afN6tv0HpwEQp8mINGQ0ILpe6FGNCsPFuwBUTLpXaDS8kpuP7vwtrhlua7lBEGsslUDWMbla0FX3q_K6RFj6pgpXthwLWEU-zLYIv_QfrVHBBc2DcHfdvSaWnzaKuO6q1LKiPlZvTOWAzFsrmxhIyqCkl3oG1RyVhDsGq41FNplwOcDwq7B7xhT1y0ToNy0zvyjaeHtnGbmJ0i7BXdXZtxkyhF3hrjzRLCQmO5SrH8fFHeDcmz4YW6E1-sq_IN8g8OBhjaIXqa-tNvKPPrtDD1h0pM0TEqqHErfCG-VVIvNMo0jLz9oiw8-Gd4rMd66KmYbdqGvufiGdSmTx3d9C2KrhdfldjaRa3nHCp35eN3YMP9fX7w3toUJ7zE1rQHTW5ZwQNwbFRjyxjhsqTf72g4Gx3oa34fW4q9eWpuIUTGAGjN8v_BCkMuC6l6-Q1wyWZV-4S9mznj6lCrSG9eK031nP3x6rpEnpu6mFwj9ElBlz6kub2mN1pySBRor9haXTP7ai5KASkIy-UiBY6ucWo8zC5gMc9l58Qdg7JN-NuLA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/opportunities/general/v1/customer-account",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"opportunities",
+								"general",
+								"v1",
+								"customer-account"
+							],
+							"query": [
+								{
+									"key": "withCreatedCA",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "keyword",
+									"value": "pt",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-list-ba-ncx",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE2MDI0ODIwMzMsImlhdCI6MTYwMjQ4MDIzMywiaXNzIjoidGVsa29tZGV2IiwianRpIjoiOTA2ZWI2ZDEtMmMwYS00ZGNiLWE5OTItOTc3ZmJkNmM5NDU4IiwicmVmcmVzaCI6Ijk2OGZhNTdiLWFmMDAtNGQ3OS1hZmVjLTNlMjE0NmZhNWEyZCIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.YvXAur7mAduTAVUF-rGYSzUOV7akisD2cEbAHH3UX-DiZc0rYcdZjDaMk7HvFpv_0t_B_H1XIRq_DDWQTlasAge3upzexM9Icn6_bAn4JCoU0gTMmwn9MWjfgLgDddZOMMNseR5IUnrwoayjxG0arWYHvgkPgrpqxsL1KYhy8NOrazxRpOLgJqCxT_W0NdVbrsZQmxIPeEIgnAN17m-fzbBhluVCimaHKt_mRAj9nV18187JI8tIUljpdnsiK2ADwcOjY1MsSujG-eFQC3vF55roE4po0cWBVmb7yTlb-HJkNTRIueNS_u_HrpWUmGTRJWuaAwWWw_WBQn3F__V5sogtETtaieLCoBxCcrO7P6xGbYINe4WVsQnnumiTemKt68nKe2xVQSXIuM-NaCzuAXmrcle5HA2Ir31TA8nyjIwc6BvKU3vbZUng6gV4dtPuWX81NSwpKKfbxCMJCgZFkwByX1CV-VzwhJTq5fNwrkace57Y2KMlLMAlDW6M6ept2MeSOwuKKBp9UMwBACJphDxtaLSpvAJhULqZ-8inMtSl6pPmHZhAe9drlHnEh8NPyBWRlgretVP14LduXR0z4BDaeHSqmaPgLAfKLJj61QgDbUGsyJta_6WdmT2D4Bqsz-86evCTLNxKR38IrkqK6FlOzkEeYHy6F4tNIGRpukI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/opportunities/general/v1/billing-account?customerAccountName=PT. WIRA ARTA TELEMATIKA&segmentKey=BMS-1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"opportunities",
+								"general",
+								"v1",
+								"billing-account"
+							],
+							"query": [
+								{
+									"key": "customerAccountName",
+									"value": "PT. WIRA ARTA TELEMATIKA"
+								},
+								{
+									"key": "segmentKey",
+									"value": "BMS-1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Activity",
+			"item": [
+				{
+					"name": "get-activity-type",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1ODU3MTUyMTYsImlhdCI6MTU4NTcxMzQxNiwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNmE4MDY3NDYtOTM3MS00ZGQ3LTkzMTYtNjE2NGMyYTllM2YzIiwicmVmcmVzaCI6ImY1YjA3YWY4LTAwZGYtNGM4YS05ZjI5LWE4ZmU1NjI5MDJmNyIsInN1YiI6IjlmMTUxYWFlLTBiODYtNDFmNS05ZjMwLWUwZjBhNWY4YjE5MCJ9.PidGgt-gOhCDASHpz1jslZq0b1RV5iSFg7r5JegliqPJY786kTrXtah4cbeZjGgO_M9mLGLNFcCfJmUo1RBaTgxm9inAvITdRjlmizBkSO7ZBvV8bpxk6mx2Bp_mpGKf2FBrSsCgd3C90R8xrmG3A2SqJjFuthb1Zzpa-IuykgGuHvuukl_ZgvjqLgdbSA4S_lRVeUJ3z_BmT2nuwcQKONOdZlUReml97M2Y2BiNHrYG9trSCmewbNxDQ3o93iM3_am4hXjlWwB1SvNOzp6S_iL5XyWZJR9gj6CXXZpjEJYXwCnNOoCGDtGRExw7UXKNCsXkBA_Uz2VPJ58ZrpLv5v1DlJ0NuKurx6ACg3rFB_fxJBOefH4fAx6H7JPpeQd-YkUyGDE3008BNJu-KBa7dIwkcvROOjX6z7K2ExtGprcRbFtXRVJ1lBvgNMHezv2h7JMzJcce8FgtU3C1tDDZMmdPPUrx0N-PIqiFsze94pYULLxuBnz4VS_5tA-w_3V8fjz3Kl5-n9e8rm0tWWG8JJDtzAB_1VVJcv69LSeSMC6td10yXAzX77GBdAN25ZiyRxRADsDZANAa4WxhPCHDAlcaTqppNnov1VIxuvuGvPkL8Y2_f-n71QiWXC2zyzh24suVQoPVcvJxNRSwEEUJaYH99oG1b6Ga1zoK8XBXOXY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/opportunities/activity/v1/type",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"opportunities",
+								"activity",
+								"v1",
+								"type"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-activity-status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1ODU3MTUyMTYsImlhdCI6MTU4NTcxMzQxNiwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNmE4MDY3NDYtOTM3MS00ZGQ3LTkzMTYtNjE2NGMyYTllM2YzIiwicmVmcmVzaCI6ImY1YjA3YWY4LTAwZGYtNGM4YS05ZjI5LWE4ZmU1NjI5MDJmNyIsInN1YiI6IjlmMTUxYWFlLTBiODYtNDFmNS05ZjMwLWUwZjBhNWY4YjE5MCJ9.PidGgt-gOhCDASHpz1jslZq0b1RV5iSFg7r5JegliqPJY786kTrXtah4cbeZjGgO_M9mLGLNFcCfJmUo1RBaTgxm9inAvITdRjlmizBkSO7ZBvV8bpxk6mx2Bp_mpGKf2FBrSsCgd3C90R8xrmG3A2SqJjFuthb1Zzpa-IuykgGuHvuukl_ZgvjqLgdbSA4S_lRVeUJ3z_BmT2nuwcQKONOdZlUReml97M2Y2BiNHrYG9trSCmewbNxDQ3o93iM3_am4hXjlWwB1SvNOzp6S_iL5XyWZJR9gj6CXXZpjEJYXwCnNOoCGDtGRExw7UXKNCsXkBA_Uz2VPJ58ZrpLv5v1DlJ0NuKurx6ACg3rFB_fxJBOefH4fAx6H7JPpeQd-YkUyGDE3008BNJu-KBa7dIwkcvROOjX6z7K2ExtGprcRbFtXRVJ1lBvgNMHezv2h7JMzJcce8FgtU3C1tDDZMmdPPUrx0N-PIqiFsze94pYULLxuBnz4VS_5tA-w_3V8fjz3Kl5-n9e8rm0tWWG8JJDtzAB_1VVJcv69LSeSMC6td10yXAzX77GBdAN25ZiyRxRADsDZANAa4WxhPCHDAlcaTqppNnov1VIxuvuGvPkL8Y2_f-n71QiWXC2zyzh24suVQoPVcvJxNRSwEEUJaYH99oG1b6Ga1zoK8XBXOXY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/opportunities/activity/v1/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"opportunities",
+								"activity",
+								"v1",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-list-activity",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjkxMDEzM0B0ZWxrb20uY28uaWQiLCJleHAiOjE2MDAzNjQ4NzYsImlhdCI6MTYwMDI0NDg3NiwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiZjJhYjkwYTUtNDQwOC00Y2RmLWI1MjItNjVmYjhkYzVkMGYyIiwicmVmcmVzaCI6ImQ4OTkwZDZiLWNjOTItNDVmZS04ODg3LWYyMzA4MzhjZDllMSIsInN1YiI6IjBiNWEzYjllLTgyMjItNDM3OC04OTNiLTgxNDVlNjNmOGM4NCJ9.GwBRE0yUXgDvIcsDe85fwtmfJtSV2biZ8cEKlJZKbutSUUYC0h02GRYH46hnzAkV1aI3wKvvhoI7VgCyN4VEAP4QMvjCroPpZ0g9UiiOns3nD1yUiDPX_cn9KMZItX9coM-l04CtE_nZLqF8aE2y9zXv0g8OJWDabwX45f6QfmD_X6womvBrq2qmG0rl7bMKrcTbNN7UDj07gbKAx-pYkzTMcOzzHVIbMTKEXukXBJ2RiEHm3-HSdELM4GEPpFa9-WYmU1cfvwKN_ob0PkOnaWMePMShauCCxUChHXQ2NPIcuysrn7cm7sOyeH_RrIGV0ub1Dp0rHI-LTABCoMj3ybJ7qdhIUeGwpf_r5i1PxSXPNbx3kFVycuyye5MQk-BPQP4_gq4aAuYny0o95YiqO6-KeR0TSqsdpXy578B-ZAOR1gutbf3M6vK5LxboLilxb7OzKt-fODHWHder4r8kMBbzKPHibjvZIBm69aTwextApf5gozreVrkA2jiV0MAuM1DGl4mFXjlXzJxITL2zZIWLKmLl31CoYWlT1ARmTgyr-uQLlxLcUMTjTDZaolbxdpWI18JGm3yO89uw9MF3vKy1sFV5IwU5y3AGRejGrZphLwIHbcn7sdgAjDST7sqRRfHbSf22O7TB57iFpmdDiEli11cpgVrfuvrEdysS70Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/opportunities/activity/v1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"opportunities",
+								"activity",
+								"v1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-activity-detail",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTU5Mjc2MTIsImlhdCI6MTU5NTkyNTgxMiwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNzQ3ODAwYzgtOGZiYy00NTJjLThjMzItN2IzMDIzNzJmMmI5IiwicmVmcmVzaCI6ImYwMzE4ODE5LTMyOTgtNGRlNy04MGExLWRmYjFkZGYxMWUwNSIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.dBeFnb_gynOitpf3pZbw7evkmyMFubvuLow2Wit5P3ib9lrf3DF65ifjBojuijdkE9MP5ocwmTag5w9LRMqLO65SCE_ZSCmJt7sE8o3FloWHeY59H45o5i4QsuDOBB7qcwjKvQsyDhPTZ2d-UaDcICjWZcQj8Ge5666G8Ufd8vqOCjZ8AOnhpsfCKbha8q-6r6L9_aRMNDj8RRro4oKG0Kv6RNp0D_VQ8s--S3KgZg9gMHWqeVyKk1mDQfkYGG-gk9aEr4IvmeJDy20xfXEvnXVFaeZH-XxdkNSdAB34ed4cZzDW60Aa_l1dlDvcconxY9nOpnoBClqKh4vgCGtZqVmXftlHRlghU59jGGEptoCxRrib8kMISX9TVhFNoTDgLk2Y0uWbvysf3d02bWLIcNNWbOqnsl7C8-v284TvkOuIAYm5fhg58j_zOaVQ0N7rvJStf0Jy1m_fsBfnK65Nq3mIHSNMWrEFYGn-ItlH-0rte4w8DShJHHVbyIzcckD6yOPE7rx8QYZT7vq8PunXh3CWRhPFOsKFC-gJ8nCKyjBJXTVdrc3fAwpB2xHIoqKtvAKXL1vhzr_r3Z0_p3dbPzSR-cULpoKxpPxb5jZyg-b6_1JPM5wZGteuWHg1w4QERmV5qGlX0moOa0OZRMj83CuRABplzjzk16z1jrrvGk4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/opportunities/activity/v1/:activityId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"opportunities",
+								"activity",
+								"v1",
+								":activityId"
+							],
+							"variable": [
+								{
+									"key": "activityId",
+									"value": "ACT-402789-1595926702528"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-activity-bulk",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-list-activity-time",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjkxMDEzM0B0ZWxrb20uY28uaWQiLCJleHAiOjE2MDE0OTQ5MjYsImlhdCI6MTYwMTM3NDkyNiwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNWZhYzZjOGItMWY1NS00MjUwLTliNmUtODgxOTNkNDVkMTBhIiwicmVmcmVzaCI6Ijc1ZTRjN2RhLWI2ZjQtNGQ3Mi1iODA0LTY1NDQwMGFmYjgyOSIsInN1YiI6IjBiNWEzYjllLTgyMjItNDM3OC04OTNiLTgxNDVlNjNmOGM4NCJ9.cTmXPIqh_EDiBLzOtULfZoKsuChyxtg6Cwlgs0onRMxzMlOOz-xGEX4tBbtA9stZHl61m7Sq53NQuQAvL8-z_uA6B7_Qc7l7ggH3YDcnxj9--A8mnKQ1BzvhUUp2QCDXYMJOuHimhiTqFviA8gTBS5Wo6SIruf4EiKEYafZ5vj9uzQrTrMXvLuCbjJ2mxQmBUfDSPrqK3-xTy2Zklby3NgjsKG7HoYN9f8IUOY3nyGAUxwmkB6Cm4wkIr1F5MZ74Qxc4hPdRQUEsXcDnhNXkfeS9-5cxNp1Go9QuaWQv6Ww-HvqdSU6AbxwkOO5cMsvUCVE-8IGWvayS8ZnsdONd7-jDN3MEeeK7SMiSIgpAygZTK9QrxFkiDCG00SvBQwzoIj7CjiddAM2tomDB9maezjEBw8ypJpj7-7T6_ygzlom8CuQwC5ImsS00koHjX_H22YjIOsi9D_quvd_uDeE6R_1RM-AFZvc-3-DdY3uXFAm1YVC8P_UaJ0PWuKsZt3QHSlVeW2TP-rZgo2Hi7_8idx2-3ew9TMUS8cISkQgkEZaiAYCdTo5fjVAKM3Cm-38avL00heZIf7HJ16WSZ3ZDBh3isW1VKm1lZHc_K9jkTD7lTh1GwkWZFbBiwIxcoHYwuSZRpyKqZndq8IMLH_NaMF0X6cZdaepaWWJwVXemmvw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/opportunities/activity/v1?size=100",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"opportunities",
+								"activity",
+								"v1"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Activity v2",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjkxMDEzM0B0ZWxrb20uY28uaWQiLCJleHAiOjE2MDExMjcyODgsImlhdCI6MTYwMTAwNzI4OCwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiZjRjMGQwZTAtMDgwNi00NDczLTk3ZjAtYjI2NjhjZWJkYzdlIiwicmVmcmVzaCI6IjQ1ZjRkMjA0LTZlMjItNDFjZC04Yzk1LTc5NjQ5YzJkNDYyYSIsInN1YiI6IjBiNWEzYjllLTgyMjItNDM3OC04OTNiLTgxNDVlNjNmOGM4NCJ9.e_aR2rMgEVm_khASfmogR5i8bZgui9PtjDo4ecCaHuDoaL-n0LkYoQJvq538IRBIQCKoY5bQTxXWilhabRHDPtXUUJh3h_TtconruuW5WwaJ2znNF-n0wqj5O8l6EPmKQfKHREtAvV7vwc4CLWYJxFMqwgkAtwyvpprvR5uXcMg7tthHWASQJpTRJwzcPRuNwCOtyNMt7jXNPDdtw-8YgTjNUOttAW4cOjNM9ySmpbSFr-b8uUDkMmkbORDxKZK251f3kw0_KnL4DgXf0sjSoBRRudXoOSahVxUrWA5yDTRINdMHWdgn8EsAI-AvhO_VbHGs6gN4zrXXUCPOv1ZVtINwSr9ScErq7NcLwKTcaEG1Ka71-knbg68XNjaQiUmoZ9ZjfYf95N3cV09ESFhrXPZmxWEDcl8BV7Jiq6FmJtjNbRiPPrKYryp0yFsA29EU19NnL8yvh2CJeOYVa77ha7-mD18FzPA8Hfqsf10tX7tn163dp9790fDoQDaT1JJb_Fnv9I4h7RUnQE2OfScGsFHnHKQBLqFqZA83YhNappJNap0LJ2daF0ppB3akz9-zQziFlQHdFaqsZJZ_9jAPh2FDeetmxWHFespdLiYPrWjDDNApBdTXTrkCZkDQOXj45K9zzcGSJfCYfR24bFfrNdjFePHlAOeEyRVeibBC-ko",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/opportunities/activity/v2/ACT-402789-1601016798400",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"opportunities",
+								"activity",
+								"v2",
+								"ACT-402789-1601016798400"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post-activity-v2",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE2MDEwNTg4NzcsImlhdCI6MTYwMDkzODg3NywiaXNzIjoidGVsa29tZGV2IiwianRpIjoiZDg2N2U4NGYtOWNiNS00M2E3LWI3YjUtMDc2YzQ3MTliMzJlIiwicmVmcmVzaCI6IjFmNGQ5MDhiLWNjMTMtNGU2Yy05ZGU0LTJmYThiMzdmNzlhNiIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.AgKfijvyEUZU7LUfPaEUIJgT4Tymno0Ucidn3uRGF3XG_Ju9p-Q60vl8s_KtiYL6N7ke5lS3c3-8Rd2WRoRVIOeQsJC54I9UhmT6WqykxY-vRMnxJ-uH4pMocfV9eyPBX1f3Izmf9NLpiHHnZ9eLwBDex8h7A0Nj-zsAFco0YvpVNheFiiMEEJwnTABIwH0VE0wOWkeB-kW4jOJl-OWVZWHuP30Xi3TpL-Tr85jRg7eAS92ii0m6ieBPZy9fziU8NvgjzstZxQlaimrA6P2gGNb2eGTUOICyw2kZRZHvu0Tv6ZgyWkePp5mYKI3WF65Tpu1cWxYbaxjVaiX-qg4VTb0YKHNjyfyUWxJ195rGd3M4e_O35RRzUn_lNkdfhmkNvtt2Cf01AGRlRoD-rfaY2iWaaXa07iMf81MSG2lDMMYkgQB5Pd1ZIWWg36A2uF-6woKd8076L-djhx78kcTFwbnmB4B2PKj2DJsCh_VHLlMu9CPCjf5WV-WdnIOM0BIxnpeSyFfpusbFbVfTr3X_DxvBwrmo8mxM3-cwoBXZzJKt1kRnj-6n6-nZBwxN5Ic2mg6dMyhefBs9oFvjGPuix5qHpA6VtNtV9WEbYI7DH4QsReugIa9Wq9qmE6TbHcckRnuxKVPlrXdS98HPYEFlZFEFmQ-6a3cCaOFR1pZjSFU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"projectId\": \"PRO-402789-1601001791114\",\r\n  \"nipnas\": 2920223,\r\n  \"customerAccountName\": \"BANK PERMATA (BANK BALI)\",\r\n  \"segmentKey\": \"BMS-2\",\r\n  \"activityStartDate\": \"2011-10-05T00:00:00.000Z\",\r\n  \"activityEndDate\": \"2011-10-05T00:00:00.000Z\",\r\n  \"activityType\": \"Appointment\",\r\n  \"activityNotes\": \"Lorem ipsum test\",\r\n  \"activityFiles\": [\r\n    {\r\n      \"fileId\": \"OPF-1600876135982\",\r\n      \"fileName\": \"CLEARANCE.png\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api-dev.telkomdigitalsolution.co/opportunities/activity/v2",
+							"protocol": "https",
+							"host": [
+								"api-dev",
+								"telkomdigitalsolution",
+								"co"
+							],
+							"path": [
+								"opportunities",
+								"activity",
+								"v2"
+							]
+						},
+						"description": "post-activity-v2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lead",
+			"item": []
+		},
+		{
+			"name": "Opportunity",
+			"item": [
+				{
+					"name": "delete-opportunity",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTczNzMwMjEsImlhdCI6MTU5NzM3MTIyMSwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiYmVmNzEzNzEtNGUzMC00MDc5LWJhZGMtMGEzMmE5NjNjMDZjIiwicmVmcmVzaCI6IjhhNzhhZmFiLTExNzEtNDYwMC05Yzg1LTUwYWRmMGY3ZGM4ZiIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.XxG_Gv4AKDBL_3wMaRh5WzDI9LetuCgDfXefuQ-el9C2ghSNrfqLWl_TFg1E9qxX88V2yssPPuA5JPTHAn0xivXHeAzhQmToyURkDwaLiqrSjRW0c2QQwBb07sdZvAwzrAxTMjV2TDEOdc-24gcO0HxOGY3XnixhGzEKDt3-7CWV7eUIxQy6_eZj4nmzXFnVqNLHbld2lih_Ji-Llxv1X7MPAukqi0S29eknDnbngwqciL4ZDiMPa3S4xEzzFfRnwvBGDI712c2TbQqhBXarpO9aMyP9UEHmkqsydJYl09M5EOmjHGCfe0jOhpjwCugEBxIIWve6BqkxDWMqVArR9y-T8WMC7HkDF5AsP6m5BLoX19EjMpb37UahQsNP3WOTU6v9cfM47RgB39sW-JcPA84meQ5feVEf_6o6W9Q2Lq5U9hQdF9McyTnVibqJADMRAetc_PwgZY1ZjvEwn70Ty_FsDM1gZQxzVfkBQzt63VfiBOlXfcFKMyEBPr5q8Pwx5fpXCLjWbjqjUuHj4SLxuMJcB3MowOPPQVXqvpDEG84GfP1HCTInp3WftVqkLtLsHHFJf-oN1puFVRxY3s0XtG2NeZTOGRMsTVBO8k0_MVFcg7C_xmaEeBdz1ATwgwnPqIg-DlX5rRVFvKzncX6bwKJiz2GJJLNbTUisu4W-U-0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/opportunities/v1/:projectId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"opportunities",
+								"v1",
+								":projectId"
+							],
+							"variable": [
+								{
+									"key": "projectId",
+									"value": "PRO-402789-8587625593"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PIC",
+			"item": [
+				{
+					"name": "create-pic",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTQyMDA4OTIsImlhdCI6MTU5NDE5OTA5MiwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiOWQyM2IyZTEtZDY0OC00MTNlLWEzNGItMjNmNTFmZjM3NTQ4IiwicmVmcmVzaCI6IjA1ZDNkY2U5LTg0ZTgtNDNmZi04OTQ4LTE1NTViZGI4NzE2MiIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.sk3QcJR8EWs0LItJZkNZqObxI1IKLqb_uIpJlM_crQ6A6IuE-SL_XlCJewApooaflV1iDe8umgn2x0ok1brrFNdAp_KDPIXzh5R-19y4kncKuoxxmbhhacyWkV0opY5LCaHs0wj06U9XTPpPJ3NE7MUkqWO8rOKsubThCeLqIDicmLRHVrasVUQELHO96f9Qhx7c-P5cTfRjkfe4F4u2JhbdBlzUlrudng8Hwm1pnAhx4dYb8YdSuZ2feMCR67vxFiXx--RexE58wXgvvr9Lqy4bna8kRtB9kfeaLyZIlmYjaK1yOc3nATBF1i5Epen-jvfYLtbFv9S1fFrL_FRKbPV0gqHQTw576Z_hcUeO4vKaZD47zoRi4rtjQHZID8ObAQ1JbA9--tSpLXkdlibcbZeSC2RLC5gTEwcW_DsbQG0yuF_YjE_OGca2MuFwFP4eRUF9G8BnGsthFcbu8FXOx3Wp0b5Km56JqTvY5mIwm57-UzNDVx3z1CkH17Hd1eNfpRpjoi0-t77pgllHLLnKKoqypI7E0eK9DnjxHu-ZYu_BP25p9tamLM0deQFWV0QkUlAjbSSj8ZsZUI_6K5pJFMTznsfN7vFBUyYLIeylNvzd_ym0xzhT6tSaV-EWth_aONUuniwWnh7uOCmeKr1G6jyQLkiCwCmtsZ_P8DDpRoc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nipnas\": 3705763,\n    \"name\": \"Rizka Annisa\",\n    \"duty\": \"AM\",\n    \"phoneNumber\": \"08181929182\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/opportunities/project/v1/pic",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"opportunities",
+								"project",
+								"v1",
+								"pic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-pic-by-picid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTQyMDA4OTIsImlhdCI6MTU5NDE5OTA5MiwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiOWQyM2IyZTEtZDY0OC00MTNlLWEzNGItMjNmNTFmZjM3NTQ4IiwicmVmcmVzaCI6IjA1ZDNkY2U5LTg0ZTgtNDNmZi04OTQ4LTE1NTViZGI4NzE2MiIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.sk3QcJR8EWs0LItJZkNZqObxI1IKLqb_uIpJlM_crQ6A6IuE-SL_XlCJewApooaflV1iDe8umgn2x0ok1brrFNdAp_KDPIXzh5R-19y4kncKuoxxmbhhacyWkV0opY5LCaHs0wj06U9XTPpPJ3NE7MUkqWO8rOKsubThCeLqIDicmLRHVrasVUQELHO96f9Qhx7c-P5cTfRjkfe4F4u2JhbdBlzUlrudng8Hwm1pnAhx4dYb8YdSuZ2feMCR67vxFiXx--RexE58wXgvvr9Lqy4bna8kRtB9kfeaLyZIlmYjaK1yOc3nATBF1i5Epen-jvfYLtbFv9S1fFrL_FRKbPV0gqHQTw576Z_hcUeO4vKaZD47zoRi4rtjQHZID8ObAQ1JbA9--tSpLXkdlibcbZeSC2RLC5gTEwcW_DsbQG0yuF_YjE_OGca2MuFwFP4eRUF9G8BnGsthFcbu8FXOx3Wp0b5Km56JqTvY5mIwm57-UzNDVx3z1CkH17Hd1eNfpRpjoi0-t77pgllHLLnKKoqypI7E0eK9DnjxHu-ZYu_BP25p9tamLM0deQFWV0QkUlAjbSSj8ZsZUI_6K5pJFMTznsfN7vFBUyYLIeylNvzd_ym0xzhT6tSaV-EWth_aONUuniwWnh7uOCmeKr1G6jyQLkiCwCmtsZ_P8DDpRoc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Rizka Annisa Kocak\",\n    \"duty\": \"AM\",\n    \"phoneNumber\": \"08181929182\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/opportunities/project/v1/pic/:picId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"opportunities",
+								"project",
+								"v1",
+								"pic",
+								":picId"
+							],
+							"variable": [
+								{
+									"key": "picId",
+									"value": "PIC-1594199468380"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-list-pic by-nipnas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTk5NDg3MjEsImlhdCI6MTU5OTgyODcyMSwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiMWE0MmRhY2ItYTJjNi00NDI4LWJhYzctMjA3YTMzOGQ2MTFhIiwicmVmcmVzaCI6IjAyMDk3ZmM1LTlkZmQtNDVlNy1iMWMxLWY4ZTdkMDhjN2UwNyIsInN1YiI6ImNhZTE4M2RlLWYwY2MtNDY5Ny04MTI2LTA4MzU3NDdhZWE5MCJ9.guvJzqybWGgEl88nYNVrvl4y8OeoliMjddJPxArOfEwDGEN5A0ZNgdCuGbQjCzUGunbD9bZL7_IsgwblQov2Wx50iH2HEjSRvFhXXwxfX3MFfM2d5S6zkg4nOmcFPvDFUFlmVmhadNquMGWS7E97QvpkONn-zW9hCjvZXhZeCVgn4RGtojWpNYLvqjQJpcQEonk4n2B4oP6hDac_-iC4kn4xMSoAUUu_2FDm4RWT6vgqqbL3oqVcS0i40OmDr5XNSSGAGtxaDF8wY51Ye5IFotq8ttEcxmuTWbbYShLJiNOv7dk8zKrtrhrJ9VMGHahnvpHs0iiVQnyY5BWcyqLjo9FWRPRQGYxAWflaYc200YWKFCaIMuCNJnRl-Po-qkAzMIq9hPABb1BRzpbsw59D2GcGbcHZWXLkmaOZylN5ilnBtx9BSMrXt_LsBISV0xCDq87QOQlq0k-9zf3IC-XzFJsgEg1Z-y8RfNVYdK-gmSZsLUJemC9gfc9k92w4xh25ohV7OZ8oKgvI5e0FBsMQnY_R6QVePrrWbOZe52k6DPrXu-q4F5f3IM-nWRM6Q1cXfnHzO6vMN8jveVGL6PmFLGli8mVJI0Hpx6owOdj08A7SRnFatqaT1NfaPZdbIGWDVL4lAMenaANTxPxMJ_eS5nvfWbCGuPtfO5VDfYmPFc4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/opportunities/project/v1/pic?nipnas=3705763",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"opportunities",
+								"project",
+								"v1",
+								"pic"
+							],
+							"query": [
+								{
+									"key": "nipnas",
+									"value": "3705763"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-pic-by-id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTQyMDA4OTIsImlhdCI6MTU5NDE5OTA5MiwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiOWQyM2IyZTEtZDY0OC00MTNlLWEzNGItMjNmNTFmZjM3NTQ4IiwicmVmcmVzaCI6IjA1ZDNkY2U5LTg0ZTgtNDNmZi04OTQ4LTE1NTViZGI4NzE2MiIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.sk3QcJR8EWs0LItJZkNZqObxI1IKLqb_uIpJlM_crQ6A6IuE-SL_XlCJewApooaflV1iDe8umgn2x0ok1brrFNdAp_KDPIXzh5R-19y4kncKuoxxmbhhacyWkV0opY5LCaHs0wj06U9XTPpPJ3NE7MUkqWO8rOKsubThCeLqIDicmLRHVrasVUQELHO96f9Qhx7c-P5cTfRjkfe4F4u2JhbdBlzUlrudng8Hwm1pnAhx4dYb8YdSuZ2feMCR67vxFiXx--RexE58wXgvvr9Lqy4bna8kRtB9kfeaLyZIlmYjaK1yOc3nATBF1i5Epen-jvfYLtbFv9S1fFrL_FRKbPV0gqHQTw576Z_hcUeO4vKaZD47zoRi4rtjQHZID8ObAQ1JbA9--tSpLXkdlibcbZeSC2RLC5gTEwcW_DsbQG0yuF_YjE_OGca2MuFwFP4eRUF9G8BnGsthFcbu8FXOx3Wp0b5Km56JqTvY5mIwm57-UzNDVx3z1CkH17Hd1eNfpRpjoi0-t77pgllHLLnKKoqypI7E0eK9DnjxHu-ZYu_BP25p9tamLM0deQFWV0QkUlAjbSSj8ZsZUI_6K5pJFMTznsfN7vFBUyYLIeylNvzd_ym0xzhT6tSaV-EWth_aONUuniwWnh7uOCmeKr1G6jyQLkiCwCmtsZ_P8DDpRoc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/opportunities/project/v1/pic/:picId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"opportunities",
+								"project",
+								"v1",
+								"pic",
+								":picId"
+							],
+							"variable": [
+								{
+									"key": "picId",
+									"value": "PIC-1594199468380"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Project",
+			"item": [
+				{
+					"name": "get-all-data-project",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTg2MzM3MTMsImlhdCI6MTU5ODUxMzcxMywiaXNzIjoidGVsa29tZGV2IiwianRpIjoiM2M3MmVkZDUtNzkxZS00OTVhLWE5MzQtODA4MWIxYTRhOWY2IiwicmVmcmVzaCI6Ijk1OGIwYmNlLTZjMTgtNDM3My04ODU4LWNkYTk1NTk5NmJmYyIsInN1YiI6ImNhZTE4M2RlLWYwY2MtNDY5Ny04MTI2LTA4MzU3NDdhZWE5MCJ9.CRaWTbl07QIUyPTRP4xLibDO_ZmsCSj1iUiELl1PVkcmyzcmwonu6KBgNbp0h8-muJJFfumbEbT6xeWoHHRlBkiUSLhRi0RPsrMt931UG4y1Sh1MBLSEgZgD3cHzrMgxu9m3xi3Pwax-kCF-EIAKkGA3SjDNot5P0zz_qxYGAxj0b7IqXT1MvqDUs3EjbJYA35150MTbGY8xRxN2DLxMDR4JngsfkaOvhQqDtb-0oSz8hx3oI4HpohTkc3gmrNEjIDgZ-fgtDJOtQbpBHwknd1oV1ZiNnuAzy2xHMCPvAJ70NKlWBto-cvNswQY3zFLMcwyRPFiBPqh6wJPC_pRw0nrTj9vyBZ-LvR5n-cQnQWY--S57IWft9D48E8-_CYhfLX9ZO4y_xqPUWmhovXwFodKhNbmXJqMKC7aTIj0fu82p81yveQLIqczuQGXth30fuSVJ0CrUXqlrBylmCXe1F9NNj7VtFWiDnm1yGvrqJKUWbot2ofavIXXcYfWVGdtq80RyK8oBMUKW42pAakZ-Rb-b7bbkX87FqwcKF3VnUKsyn6LW_QLR_ABxoDUrV5pni4Se3lJF6uUs2Qm5XAa1Y3CULO7qn1jkUqDdUzpS6_bRHQkf5nqcTy6sO8aaiMgO6s_ayfAKs2hY_dEerQEEcSN-xcKDehUb7FzffNzbpxc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/opportunities/project/v1?page=1&size=100&sortBy=-statusValue&search=test",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"opportunities",
+								"project",
+								"v1"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "100"
+								},
+								{
+									"key": "sortBy",
+									"value": "-statusValue"
+								},
+								{
+									"key": "search",
+									"value": "test"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-process",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE2MDI2NjEwNTAsImlhdCI6MTYwMjY1OTI1MCwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNWNmOWE5NDQtNWI3NC00ZWQ4LWEzY2ItZTdiN2U4N2NjZTIzIiwicmVmcmVzaCI6ImYwYTA1NDc0LTM1ODQtNDBhMy1iZWUzLTI5OTkyMTdlMmNmOCIsInN1YiI6ImNhZTE4M2RlLWYwY2MtNDY5Ny04MTI2LTA4MzU3NDdhZWE5MCJ9.G4mQF6JCIzYW_893WqIXyMiz9mBmDSSHZtNMlMrFxrgt5r7Dx4_N_GjhccWm847Od5xJe1RV3j9zN9Y_I-yo1a_IP0a4YOPW6SnkhR0dZGGTIZOh1aP8jr4z-hIE1XsGrcU6NNqpfdzeqVxPIgwuK6G0AoAgcZW60WSweyXQfKtzpw96tn9GJGHts7gtS97oUp0kTLmJBGIQzG66n-JEsEJJ5wjVRFmMVx4nJT_nt58yuyoF1FfrB7Ghu9J3mcTvap_9KCMI23J_Au-IxgNu_fluRBa6XuE1DMq1xC3WnBdQYMgbgEWMM1O9BjzW0zbUHPPqaGWxIsm8wU9lcQO2kSUp0bthDA4b2r6fqIe91drc2Wig2l7mGypnCFzpDguL2WPUIaoS8Aoi2DmMzlxd7RqOc1bGqVqc-dS1RcRsngUTMxXc164_5IaW4g1sPFI9LMs5OmRVBCFxkXkVK91O2kL6C8dQuBJxgdn7sxWLptXWFS9CK4gSKpG_EQEjBzqCu-TmOKLY7Iw8ZspjdqogdvfT8AfkVT5uSf5v8Va8YZdvy-PHCiy2HF4dGyD-jx5vxQ0dZVLt8QzOHj0cBCXvAj8Au7FfrdcxvDQjpcOdm6ld-cmk8uxO8R_WVxMobu67jSGYsXpA1_1IdwwZ0_gpskbp5dGifVv2m3kGiJeABhY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"process\": \"Quote\",\n    \"files\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/opportunities/project/v1/update-process/:projectId",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"opportunities",
+								"project",
+								"v1",
+								"update-process",
+								":projectId"
+							],
+							"variable": [
+								{
+									"key": "projectId",
+									"value": "PRO-402789-1602658928960"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE2MDI2NjEwNTAsImlhdCI6MTYwMjY1OTI1MCwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNWNmOWE5NDQtNWI3NC00ZWQ4LWEzY2ItZTdiN2U4N2NjZTIzIiwicmVmcmVzaCI6ImYwYTA1NDc0LTM1ODQtNDBhMy1iZWUzLTI5OTkyMTdlMmNmOCIsInN1YiI6ImNhZTE4M2RlLWYwY2MtNDY5Ny04MTI2LTA4MzU3NDdhZWE5MCJ9.G4mQF6JCIzYW_893WqIXyMiz9mBmDSSHZtNMlMrFxrgt5r7Dx4_N_GjhccWm847Od5xJe1RV3j9zN9Y_I-yo1a_IP0a4YOPW6SnkhR0dZGGTIZOh1aP8jr4z-hIE1XsGrcU6NNqpfdzeqVxPIgwuK6G0AoAgcZW60WSweyXQfKtzpw96tn9GJGHts7gtS97oUp0kTLmJBGIQzG66n-JEsEJJ5wjVRFmMVx4nJT_nt58yuyoF1FfrB7Ghu9J3mcTvap_9KCMI23J_Au-IxgNu_fluRBa6XuE1DMq1xC3WnBdQYMgbgEWMM1O9BjzW0zbUHPPqaGWxIsm8wU9lcQO2kSUp0bthDA4b2r6fqIe91drc2Wig2l7mGypnCFzpDguL2WPUIaoS8Aoi2DmMzlxd7RqOc1bGqVqc-dS1RcRsngUTMxXc164_5IaW4g1sPFI9LMs5OmRVBCFxkXkVK91O2kL6C8dQuBJxgdn7sxWLptXWFS9CK4gSKpG_EQEjBzqCu-TmOKLY7Iw8ZspjdqogdvfT8AfkVT5uSf5v8Va8YZdvy-PHCiy2HF4dGyD-jx5vxQ0dZVLt8QzOHj0cBCXvAj8Au7FfrdcxvDQjpcOdm6ld-cmk8uxO8R_WVxMobu67jSGYsXpA1_1IdwwZ0_gpskbp5dGifVv2m3kGiJeABhY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"Draft\",\n  \"factor\": \"\",\n  \"notes\": \"\",\n  \"files\": [\n   \n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/opportunities/project/v1/update-status/PRO-402789-1602658928960",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"opportunities",
+								"project",
+								"v1",
+								"update-status",
+								"PRO-402789-1602658928960"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "quotations/general/v2/customer-account",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE2MDE2NTE1NjEsImlhdCI6MTYwMTUzMTU2MSwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNTI2YjYyNWEtNzA1My00NjU2LTkzMTItOTU5OTAzNGMzNzAzIiwicmVmcmVzaCI6ImNiMWYwOGFjLTY1NzItNGZkMi1iNTRhLWE4NTVjYjA3MjA4NyIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.IwiV9shm9TN7yJZZ7q3MUWZCRDqJ9VDrCqkorpOqYR9e7238Ke-8_oAFqkJhK8c3Aqi7o4MH8n2yhRgrz-49PdSKAJzNXLqESVWg4SGRDvoLKgb-wbqsNqoToaCgfhxDnDxMwxEfQVON73xbz-CD87Mj6YLNo6Dl6hwCuHAiOdNnf_rQ9wZ9seZ3R4pKLdKF1ClHmNYuVN3whkdGw8Il_rwVi6rHKweBR8uJ0X6Qjo-gyO3xsJL_d0GqXYplwAHnIcUXeRZIffZ9IungRobMCwJlU7qzWl4iLI8GWjLZMzqKNDQfxbGR5RG8Po5DvzQLud4BlYAFAG7qSomVCm006kB3ud3rekl4Y1ZwNncaSClCdiksxnjWByS6pbPxZNQP3VZGPbbqq8Iv5gyM-Dn0EhdvGMyAlceI9zoHidwjKmODhZaWWmhHq5mMJyszgLhd_br2MzbswDp2SU0eJSTtXExcEFzqKCha574TPY1bNXliSw5M_Sevqn0oh4D_eFAa7Sw-xQq82cVFpNYBWP1GYtElo0PN1Yo79UeGMovLe-Ird5pTG-Q7jAsr7x0nGi85POdqr6G6_Yoy_QHUeIL1AdoS5o9MGqr9Mghl6qlkkOgXlMV4FOxMeShgVs-G4n1YUEjU4dgmsyXDthTVi9-jmi0QAhaTtHSGmtsD0ItOSEk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api-dev.telkomdigitalsolution.co/quotations/general/v2/customer-account?withCreatedCA=false",
+							"protocol": "https",
+							"host": [
+								"api-dev",
+								"telkomdigitalsolution",
+								"co"
+							],
+							"path": [
+								"quotations",
+								"general",
+								"v2",
+								"customer-account"
+							],
+							"query": [
+								{
+									"key": "withCreatedCA",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "create-lead",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1ODQ5NjIxOTMsImlhdCI6MTU4NDk2MDM5MywiaXNzIjoidGVsa29tZGV2IiwianRpIjoiN2NiZDdkM2EtMTg2NS00ZDUyLTgwMDUtNjg4ZDI0ZTI3N2YxIiwicmVmcmVzaCI6IjVmZGQzY2JkLWFkYzQtNGJiZS1iYWFhLWIxODM5OWM0YTM3OCIsInN1YiI6IjlmMTUxYWFlLTBiODYtNDFmNS05ZjMwLWUwZjBhNWY4YjE5MCJ9.mNT0dcfDCgD517AcCS0f-VglXwaU2aqP0uIMvIUXHwQS1kQUnKWMIre5ENpqdTCBhQ8wK07l53T_Glm7a_HflDl1i6fXjcX-l4EMl-zSLj6BNsD0vehFC0gLJ4d2IIeq_5H8fT-EQ8-Wbg4XnTdDhIEKo233fvWLgetrljgdkh-jUbfE51SdWs9zjYBmITkwOYINnte9KJ_EdGYMpj78V8AISPxYEv0iJGOZriJSc3LU3zVnypfQhUEG35GfcCNQKOut_CDyv2TDvhNhmoHcHzLzRF4oVi-Fq3Eu-tpjOC2QIpTLhDU0dt1qBKWbk6eAU2R-811McueJVdcHWAj9xN_dtQyGMOJ_H9QlaYJMRB8sU_ElgH46tQI2jxYL07pdxxbeLO5ibiEUkJfnbnQT64Xzr7lLW63Zdib-5FOmnTtYvpjnRF--DQ1lXjFbRQc5yMLLsmVIFK-r_iLYPkSyV-vxnKJhJ6_aR9FVBWZGY4J3Rpg4CN2KCBs8uL2Eu57vG0J8DYanBGg01s00lpO1SlC0EN1endLR-bffjUcbuvEm6N3rxBuS0m08TgIRTUIC67PHA85uHB6YRUTS-zV4X4fyD7JmMh0y70_aljYPP6_xPgp-jE0hwP25AUHp0i07HzvwlstksEj_UmuuBDg9h5APh6RuEtD1gviBqa8GQHA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"customerAccountName\": \"PT. WIRA ARTA TELEMATIKA\",\n\t\"nipnas\": 4600005,\n\t\"segment\": \"BANKING MANAGEMENT SERVICES-1\",\n\t\"pic\": [\n\t\t{\n\t\t\t\"name\": \"Adithya Visnu\",\n\t\t\t\"duty\": \"CEO\",\n\t\t\t\"phoneNumber\": \"08112130801\"\n\t\t}\n\t],\n\t\"projectTitle\": \"Perancangan Sistem Basis Data\",\n\t\"projectDescription\": \"Perancangan Sistem Basis Data\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-dev.telkomdigitalsolution.co/opportunities/lead/v1",
+					"protocol": "https",
+					"host": [
+						"api-dev",
+						"telkomdigitalsolution",
+						"co"
+					],
+					"path": [
+						"opportunities",
+						"lead",
+						"v1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-list-lead",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTk1ODIxMTUsImlhdCI6MTU5OTQ2MjExNSwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiYjI5MzU1MTctNjllYS00YThmLTgzN2UtNTJmNDhmY2JjNTM0IiwicmVmcmVzaCI6IjBlYzI2ZDM0LTI3NjMtNGRlMi04YjExLTdhOTZmZTAzNWFjNyIsInN1YiI6ImNhZTE4M2RlLWYwY2MtNDY5Ny04MTI2LTA4MzU3NDdhZWE5MCJ9.lXPp0758IA5KtRdltb5RKxMpkt4oQnG9bj0VeRwrt7cpJvHr_b475xN1zrtaHsrUNEVOX9Ms5sqI_j3FZP8TeM4rcIqSSQSktSjlFFQxfotdEkkYBN82wOBGOp6S8WABwXIiXc-IIWSt7Rz8Rdov8Nbh2bljnPtS4tR8hc7v4Yqg-VOAFOfV8fcqZeJ16HW_kChHDzuvTqJ2VRLHNx871NofFthNv5-rSgpirGV6bZrU2cVY4OBYZOwFHcbpEL--dDxrhkpNGEcF4bq06Djt-1fxy5vHRQHWCwlhkBD8sPaOxIXRroAy3i5_b9kbCrkc91cU4MLICZaO1moMQehgU0T32rX2y1vkWi6xtvBXPnEeM5FTqZwSPeP-m4CSvn6Sei9smKzVn_AU6Pto9GmM7MiHcvvUXjvhKcMS5UH7UXJXIEfRGRhUzatifvE1nayytwNtjq8hxjZov-zJy_3RlpAaKdXQ1nJgP8AG2btcAxRgzO5nQ0fD4wYoyUE213YJl0h9zK2mwnMGZG_aEoTIlz8W6R7p5Zpa92bwXYxa1WE6zEsAFzBAG55QkjeBJNEceXDdjRMpbxvjgiGnME90V1JPO_by-vPF3pNlRjcuCaVkUs2RosjhRcdYvRhm7q6qVOwT5vv-XC1NmFehJjGiYTGRU4Tm98BBwa9rqLUYg2g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api-dev.telkomdigitalsolution.co/opportunities/lead/v1?size=100",
+					"protocol": "https",
+					"host": [
+						"api-dev",
+						"telkomdigitalsolution",
+						"co"
+					],
+					"path": [
+						"opportunities",
+						"lead",
+						"v1"
+					],
+					"query": [
+						{
+							"key": "size",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-detail-lead",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTk1ODIxMTUsImlhdCI6MTU5OTQ2MjExNSwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiYjI5MzU1MTctNjllYS00YThmLTgzN2UtNTJmNDhmY2JjNTM0IiwicmVmcmVzaCI6IjBlYzI2ZDM0LTI3NjMtNGRlMi04YjExLTdhOTZmZTAzNWFjNyIsInN1YiI6ImNhZTE4M2RlLWYwY2MtNDY5Ny04MTI2LTA4MzU3NDdhZWE5MCJ9.lXPp0758IA5KtRdltb5RKxMpkt4oQnG9bj0VeRwrt7cpJvHr_b475xN1zrtaHsrUNEVOX9Ms5sqI_j3FZP8TeM4rcIqSSQSktSjlFFQxfotdEkkYBN82wOBGOp6S8WABwXIiXc-IIWSt7Rz8Rdov8Nbh2bljnPtS4tR8hc7v4Yqg-VOAFOfV8fcqZeJ16HW_kChHDzuvTqJ2VRLHNx871NofFthNv5-rSgpirGV6bZrU2cVY4OBYZOwFHcbpEL--dDxrhkpNGEcF4bq06Djt-1fxy5vHRQHWCwlhkBD8sPaOxIXRroAy3i5_b9kbCrkc91cU4MLICZaO1moMQehgU0T32rX2y1vkWi6xtvBXPnEeM5FTqZwSPeP-m4CSvn6Sei9smKzVn_AU6Pto9GmM7MiHcvvUXjvhKcMS5UH7UXJXIEfRGRhUzatifvE1nayytwNtjq8hxjZov-zJy_3RlpAaKdXQ1nJgP8AG2btcAxRgzO5nQ0fD4wYoyUE213YJl0h9zK2mwnMGZG_aEoTIlz8W6R7p5Zpa92bwXYxa1WE6zEsAFzBAG55QkjeBJNEceXDdjRMpbxvjgiGnME90V1JPO_by-vPF3pNlRjcuCaVkUs2RosjhRcdYvRhm7q6qVOwT5vv-XC1NmFehJjGiYTGRU4Tm98BBwa9rqLUYg2g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api-dev.telkomdigitalsolution.co/opportunities/lead/v1/PRO-402789-9835813592",
+					"protocol": "https",
+					"host": [
+						"api-dev",
+						"telkomdigitalsolution",
+						"co"
+					],
+					"path": [
+						"opportunities",
+						"lead",
+						"v1",
+						"PRO-402789-9835813592"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-lead",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1ODQ5MzYyOTksImlhdCI6MTU4NDkzNDQ5OSwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiYzU2MTQ5Y2QtMzliZC00NGViLWI1MDItMWFiMzQ2MjNkZDNkIiwicmVmcmVzaCI6ImY5YTM1NTkzLTE4NmUtNDFjMi1hMmVmLTcyZDQ1YzQzYmFhNyIsInN1YiI6ImExZWZhMWZlLTVhMjYtNDAzNy1iNjA3LTMxZTUyZDQ1NjQ3YiJ9.E2s4FwazCG9TloXhPk6OOUqoNEDwgwVXTN5TFiVPkTYthrx0SZkId7AsxJYs7BWwdWftJgUf4FLIFOLrlNF7RfMDo4VmVxcHeKxw6ujootNpxmZvW-Q4OIjiD6AeLq5iXz_8NDi-Cv3A-V-XM1JsGAtJpqay6j-qNZusFJviM2pyNlhhB6DozI5MBQQDnhk7HM-HxrEzBzpowDLyPJkzAna8yCNaVWCGZvCtLjfaZCaq0ec4rx2W9AS0Yj7Dm7CyE_oYHsfeIP7F1SdnODu921_iXaKJygBhvaWkQi9dybBO0Z3xdpO_xRaginG8sC6kJqL-ZfBDHHke1mBosinq41-A-eR46VK68kc9eiJqUcm7sfiGIwK-eqqvQQD_-FaTyuSxLA_zR70bexyamQ8Xc4D-dRdyFyFpiyu3GaYsSEqM1oGwyWV_T3HSh6MQKic4NKByVb-tks18Xx45yOIULJkcQVPdb5WQIzePExGFptJdbbWXoqBAiieRAA3zUD3ZNZClmV7MCg46NzoLD9tBoYskxBmtUEGFqEF2GNDTayqwiEqMJ8FRWR8kwhGg-kVUMOw6PC7lm7Irvkzz4OEQ_WqWlqPpQm7DnWV8hwo2DHmknRjsLUcVSWHq0piQ5k79ZAe8JqQvLEBFhMLqnrzMZHluGLaGetnvyWRLtU4tKDw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"customerAccountName\": \"PT. WIRA ARTA TELEMATIKA\",\n\t\"nipnas\": 4600005,\n\t\"segment\": \"BANKING MANAGEMENT SERVICES-1\",\n\t\"pic\": [\n\t\t{\n\t\t\t\"name\": \"Adithya Visnu\",\n\t\t\t\"duty\": \"CEO\",\n\t\t\t\"phoneNumber\": \"08112130801\"\n\t\t}\n\t],\n\t\"projectTitle\": \"Perancangan Sistem ERP\",\n\t\"projectDescription\": \"Perancangan Sistem ERP\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/opportunities/lead/v1/:projectId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"opportunities",
+						"lead",
+						"v1",
+						":projectId"
+					],
+					"variable": [
+						{
+							"key": "projectId",
+							"value": "PRO-975059-9898449097"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload-file",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTA2NDIwMjcsImlhdCI6MTU5MDY0MDIyNywiaXNzIjoidGVsa29tZGV2IiwianRpIjoiMjQ4MmE5YmYtZjdkOS00ZTMxLWE5YTUtNzA3NjAwYWQ0ZWE4IiwicmVmcmVzaCI6IjE3YjRjMDgyLTg1ODAtNDlmNi1hMmJkLWYwN2RmN2FhMGQ2NiIsInN1YiI6ImNhZTE4M2RlLWYwY2MtNDY5Ny04MTI2LTA4MzU3NDdhZWE5MCJ9.agsYD7Rog3F6blDxz1co5j7q9ur4z556WSJriWgvVNdIMrEYuU8f1dnGI91fpzKeLCuanG0_9x-WM88hoY0ezuOMheHSr-oYEzCZKCCKhd5vQRWyfQqGI4IDJKLcl45uJ6EYjs-V3l3pbiJis3u1hRv257ivD0_16MJWYSJkGQHo0Of09wal1D8o26FPR4yUnWGxBmYzixGWExBwtkupd9EoJWvEnHoVkwpw3r85C75anvz-c4mu4Rd1v10uSsN1CUhp46jHtlPDw4v9gEJYebcoBfxpfWixI4Lbjuac8w59odw9S18zM1-PpHY8cQQHx1Piamvzu7iQ9NeQjyNL4u84GP3XxMLgiOipIoM2l1Ktmhrba1NKsS6_wHGEqVldNn0evmDvoSZmgETX3CZ-GdOjCWyifA9mazNEyF4mj-w8ZYrsG-tNi6p3aVx7zQdQlWCn_nM4Wnca6xuFnIhh0dA9TQoFwV3iHxOzruAK3hcjU4nFtY46toUz4-tyz1AmL3dx1ZCw9oxiqSLalimlRpKrOA0yyCpnCPF6ZBARMgqSLk73TTY8d9QHpe8lmJcYQ3VHKkBQMr_4cklgcSKga0ulKuVj_-1h8Ie3ydjW9ifIr85U5ptsUYOUVACvTkULCZoyKZ-t9xZBqUmlIriUIzB9hgUnjX9uXlwqP47-uF4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "projectId",
+							"value": "PRO-975059-5094334080",
+							"type": "text"
+						},
+						{
+							"key": "docType",
+							"value": "Opportunity",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/adithya/Downloads/Activity - Mobile_(1).pdf"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://api-dev.telkomdigitalsolution.co/opportunities/general/v1/upload-file",
+					"protocol": "https",
+					"host": [
+						"api-dev",
+						"telkomdigitalsolution",
+						"co"
+					],
+					"path": [
+						"opportunities",
+						"general",
+						"v1",
+						"upload-file"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete-file",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1ODUxOTQ5MjcsImlhdCI6MTU4NTE5MzEyNywiaXNzIjoidGVsa29tZGV2IiwianRpIjoiODgyOWE3ZDctOTVhMy00ZWRkLWI3ZjAtMWU3Y2Y1ZjFiOGM2IiwicmVmcmVzaCI6IjI1Zjk2YjhkLTA5YjYtNDc2Yi1iMTZmLTkzOGVkZjJlMDEyZSIsInN1YiI6ImExZWZhMWZlLTVhMjYtNDAzNy1iNjA3LTMxZTUyZDQ1NjQ3YiJ9.tk7JL3rDkX8Ff57NC2iI8HQxVG6AkN-Owmpki5fkgAcH7da1EaydDdX7mZ1nMtixOBcBYEgBt8EqSRdH-ErZ1c4DXL4b1nHG0qzpORBQFbZOmBwXmqQfcXve-ig5wivEcO-CDSDa8SBLKl94pvIRY8X67yq-woQZxfc55GrVLExDUiOD3rat-4wQ6gCJdX58n2kQtIdPPr0R4plMlqtZzXz6j9TSdSIE1cDhRVD4HhDy49YBN4-coa15Ql3AeaDvX_mXLn-0O3OONeHq2OM86dMxhLPEg93V6vsWZU7WCoVgQTUOqFjxzSbj-e6yz6yasYmFrqnT_z0LUFzqpVA4mEVb9o0tFFPFitXAhq0YD38OXG3KMc6MhkpzBu8ek64r-d9G_7ODcbwdUhczCa0wP5jcZ9eYUdAtSRgsWMpSwT-aYAh5vLweSfVoHV_gLzvQW8Mx5lahwQ2gSxv3j4DJDgXW9SdmnzplbR1LxPzpU1VxPUq3-DZieZeBaGiHjx2Xbfv-3TH-rmbTc5hFLU7sLvQoOXB4aP7-S_gxGkVEfKyDJm3DsrkhgimSsBQcwp3qIebKwlIAOGW271N4O2x0pSNdI7R2u2RxWjrWk3JX7QV3DjbtDrDSc_YdA8TT4cNkDhe0XQ_eCWmLuWswIBiXZ1ZvhI0U8ZKCtWkrotEnGcY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/opportunities/general/v1/upload-file/:projectId?fileName=Screenshot from 2020-03-18 09-02-13.png&docType=Activity",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"opportunities",
+						"general",
+						"v1",
+						"upload-file",
+						":projectId"
+					],
+					"query": [
+						{
+							"key": "fileName",
+							"value": "Screenshot from 2020-03-18 09-02-13.png"
+						},
+						{
+							"key": "docType",
+							"value": "Activity"
+						}
+					],
+					"variable": [
+						{
+							"key": "projectId",
+							"value": "PRO-975059-5094334080"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-activity",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjkxMDEzM0B0ZWxrb20uY28uaWQiLCJleHAiOjE2MDAzNjQ4NzYsImlhdCI6MTYwMDI0NDg3NiwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiZjJhYjkwYTUtNDQwOC00Y2RmLWI1MjItNjVmYjhkYzVkMGYyIiwicmVmcmVzaCI6ImQ4OTkwZDZiLWNjOTItNDVmZS04ODg3LWYyMzA4MzhjZDllMSIsInN1YiI6IjBiNWEzYjllLTgyMjItNDM3OC04OTNiLTgxNDVlNjNmOGM4NCJ9.GwBRE0yUXgDvIcsDe85fwtmfJtSV2biZ8cEKlJZKbutSUUYC0h02GRYH46hnzAkV1aI3wKvvhoI7VgCyN4VEAP4QMvjCroPpZ0g9UiiOns3nD1yUiDPX_cn9KMZItX9coM-l04CtE_nZLqF8aE2y9zXv0g8OJWDabwX45f6QfmD_X6womvBrq2qmG0rl7bMKrcTbNN7UDj07gbKAx-pYkzTMcOzzHVIbMTKEXukXBJ2RiEHm3-HSdELM4GEPpFa9-WYmU1cfvwKN_ob0PkOnaWMePMShauCCxUChHXQ2NPIcuysrn7cm7sOyeH_RrIGV0ub1Dp0rHI-LTABCoMj3ybJ7qdhIUeGwpf_r5i1PxSXPNbx3kFVycuyye5MQk-BPQP4_gq4aAuYny0o95YiqO6-KeR0TSqsdpXy578B-ZAOR1gutbf3M6vK5LxboLilxb7OzKt-fODHWHder4r8kMBbzKPHibjvZIBm69aTwextApf5gozreVrkA2jiV0MAuM1DGl4mFXjlXzJxITL2zZIWLKmLl31CoYWlT1ARmTgyr-uQLlxLcUMTjTDZaolbxdpWI18JGm3yO89uw9MF3vKy1sFV5IwU5y3AGRejGrZphLwIHbcn7sdgAjDST7sqRRfHbSf22O7TB57iFpmdDiEli11cpgVrfuvrEdysS70Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"projectId\": \"PRO-402789-7198374650\",\n\t\"activityStartDate\": \"2020-03-21T04:48:52.811Z\",\n\t\"activityEndDate\": \"2020-03-22T04:48:52.811Z\",\n    \"activityType\": \"Kunjungan\",\n    \"activityDescription\": \"Janjian dong\",\n    \"activityPhotos\": []\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/opportunities/activity/v1",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"opportunities",
+						"activity",
+						"v1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete-activity",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1ODQ5NzA1NjUsImlhdCI6MTU4NDk2ODc2NSwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNThkYTRmOGItYTIxNy00ODU0LTk2YjYtZmJkNWUyMmQwZWYxIiwicmVmcmVzaCI6IjFjNDU1ZWVhLTBiNjgtNDcwYi1hODI4LWE4ZDNjZjJkNGNkYyIsInN1YiI6ImExZWZhMWZlLTVhMjYtNDAzNy1iNjA3LTMxZTUyZDQ1NjQ3YiJ9.cFRRb3rmDyt7EnQKa9VpivmuHBui52e0yBa8bGnZYGEAMDFquLFpf7bs1ujpbbXiEDrU90HN6C34sL5t6D2fgmkCmQ37kFQeMQfwmL69FviKZvkU8WeV-_wFCXYWv4WKo4dmfY2Nl1MYkGUmkUa0hrq9vIj7jzS5Pe1gRHJ4t161K-kY0voZ8QRQ3-UkjycsL9zqAbDSOPeeQdtuOzfMZCnC1IGe-qqQfefHWeOxvIn49gLSyFMaq4C6jzlB3YrzWvVuqUgK9ehMDuFSHZRPRtd8ejZdm2t_5zHFb3hkZSWFULLa86jIQAsFH-gBKcH-QI7_XzjFCLE5g6ngPiVauEL5sCrXVtmGasmdJvJTzG_TP65qinoVs2rfOXTFvVkqto0rkAGSwW-9cfYIW88NhEu4LZmkjSe_Fy963Xw-y9qlFgYbNlnesON9NS0RySPmpEbbxRjqxbqCLlmrO31aJBsbk_eLAEXIp-M_gm3i0XgCywwfg5HtYMQBBYyVOrAncuPwy0KMRfM-fYIDdkEirBb2_CsLJu3KbQL8VCF9YAIpq21mZ9VVR2xBxoSn7o0aGg88lbJrEuktfhR5UoOd_P3URXjkUy8XdpqL6aftyw6irWEdnUu0v4fKTJpAt7T8NrEH4PawzCeSHm4NyNlaJOCEBAozHZWUaWiTsdX1pkw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/opportunities/activity/v1/:activityId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"opportunities",
+						"activity",
+						"v1",
+						":activityId"
+					],
+					"variable": [
+						{
+							"key": "activityId",
+							"value": "PRO-975059-9898449097"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add opportunities",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6Ijk3NTA1OUB0ZWxrb20uY28uaWQiLCJleHAiOjE2MDAzODEzNzUsImlhdCI6MTYwMDI2MTM3NSwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNjQxNTg1OTEtZTZmZC00NzY4LTlmNTUtNzZjZWFiMTE3YTE4IiwicmVmcmVzaCI6IjY0MzQxNjI3LTU5ZGMtNDlmNy1hZjY0LTY3MWJkMTczOWUxNCIsInN1YiI6ImNhZTE4M2RlLWYwY2MtNDY5Ny04MTI2LTA4MzU3NDdhZWE5MCJ9.oCejvQStBdmD9DKIKIhu8k6ur5SR4xOsDJWKJj9CK6qH_E85HNidx6LX1RdDrVpYTTafuV0vvfv0-hXXTbT-EkgLU2xrk37bn2DeWYdhwqE72Vtb_HzS5V5MmVuHANJW1HbN6j7sNZqpWB9IXLR8F7R4sWqi6Ps6QnbnOFgheMbwAkfff7ApFEpnMeyh9M9YRLixnE9CMVVcNQC21kdnrc3B0PPvZwiUTcwWztHYKfrbJXXRMxLcjT27PJz3wR5ffy5DHVhAQb4ngNSx3WwbPTGRBlt9KKtcIBJOTcqKSGzz4NekAyl2NMya11WGVJP4-Ak7DbavnijDRnyCWTjqUmxzM2h5qlwTMENkNkqOoCvQb4-IsaIx_NMDqPM6-gAhvLDjHuRgu9odaRDxTGNL5FDw8gxpfQVSL_XMi_ZB4G2ifqmmgQLzCTiOhcIvDYnFFZM1YGO34oTZU368NpkIw-VeMbFooayT-3tMUWUtIYU8BiYTtbiqysOUAmid7Qv8XpZh1GgYe2NTjtloApcpda_dOpQAuKXKysrUgVj36FlaD93a54Lz4aAK6u717giVy6-YodIkC7dZ3XLDXWe_ilaVvb8t67Uu-_0pbW6CIX3oGuqLAVfCJUIuqfnLualGj6vCBVf_BoMaz5UICdhDm1jpeLUrR6Idq5kyq1rjPu8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"projectId\":\"\",\r\n\t\"customerAccountName\": \"BANK CHINATRUST INDONESIA\",\r\n\t\"nipnas\": 2914424,\r\n\t\"segment\": \"BANKING MANAGEMENT SERVICES-2\",\r\n\t\"pic\": [\r\n\t\t{\r\n\t\t\t\"name\": \"SIDIK HADIWIJAYA\",\r\n\t\t\t\"duty\": \"CEO\",\r\n\t\t\t\"phoneNumber\": \"08112130801\"\r\n\t\t}\r\n\t],\r\n    \"projectTitle\": \"Pengadaan Device Farm Automation\",\r\n    \"projectDescription\": \"Pengadaan Device Farm Automation from pipeline\",\r\n    \"solutionCategory\": \"Network Service and Connectivity\",\r\n    \"percentWinning\": 80,\r\n    \"termOfPayment\": \"OTC Prepaid\",\r\n    \"estimateOTCPrepaidValue\": 6000000000,\r\n    \"estimateValue\": 6000000000,\r\n    \"estimateSubscribeStartDate\": \"2020-09-09T00:00:00.000Z\",\r\n    \"isIncludeDelivery\": true,\r\n    \"estimateDeliveryPeriod\": {\r\n        \"month\": 13,\r\n        \"day\": 0\r\n    },\r\n    \"estimateSubscribePeriod\": 60,\r\n    \"contractCategory\": \"GTMA (OBL)\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-dev.telkomdigitalsolution.co/opportunities/v1",
+					"protocol": "https",
+					"host": [
+						"api-dev",
+						"telkomdigitalsolution",
+						"co"
+					],
+					"path": [
+						"opportunities",
+						"v1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get list opportunities",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjkxMDEzM0B0ZWxrb20uY28uaWQiLCJleHAiOjE1OTk2NjQ2MzEsImlhdCI6MTU5OTU0NDYzMSwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiMDc5ZTk0ZjItYzY1NS00MmIzLWJmZjItYTI5MGM0ODE1ZTA4IiwicmVmcmVzaCI6ImI3Mjg2OGIxLWRjODctNDUxNS04MDRhLTcxOWJlMmU1N2I0NiIsInN1YiI6IjBiNWEzYjllLTgyMjItNDM3OC04OTNiLTgxNDVlNjNmOGM4NCJ9.vIsjqszmm22T1NRG2qN1lHnkK8LXySjgIP2MY-XZ85YJNRTfqqpoyDSGi4yVY8S7o2bACWm37xtB_qk2hqPsOGeQuPzpxFnh0YwK_g4KdkAd5fFEYudbNnGPziF5vMXToRb6-AszzHp24s5jcky0xFmCuYFNoDKC-XZKu7XOhgboldxn44JeZ0z9326cIwxjv89AWJzhBO1kiLrtQKHl56q29PyN8dzX2rbC1_fqK_hARHnZIHMXYZlu5oR0tM0zkneSTLA1KoLoysT0kEX5pn4i9Y-TqhvHQ_uqGzzYoOzCbgMwowfY-brNdwogWoMe3KVbIng_gvwJ_ocnJyxKiCQMGKFbYNPUvgjsIdTWJgKiAeyofkJVUIY2DPO0BfLYZBJWdHpQsXlkn5_RAUL3B9H9rf8xG66tU3Nof3htsOFGPzsLrtyIgmHIzgYdz7t0X5ZjN9ZmbicfLDTRKGQ5Kktx-85uDr35WS2EIzh6KsX52ueBGpQx0q14fWVlW1e3TsM5NDXuLYhQwr_Ye7dQiwvEtmyG7TPPbSE09jq0hOgzACmmOzofnxC8kaAE-Iw_dNptv3cBMPqzgzrzDfZ6WRJxv13IkRd7ig9-2EeyjENQxZ6IcmD0Xn_m-KFeOBmW1k4WNRzBNjYHaTPIzTeefFDO1ghoKZd3Itfw6HiIAX0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api-dev.telkomdigitalsolution.co/opportunities/v1",
+					"protocol": "https",
+					"host": [
+						"api-dev",
+						"telkomdigitalsolution",
+						"co"
+					],
+					"path": [
+						"opportunities",
+						"v1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Opportunities",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjQwMjc4OUB0ZWxrb20uY28uaWQiLCJleHAiOjE1OTE1OTYyMTUsImlhdCI6MTU5MTU5NDQxNSwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiZjY1OWYyZmQtMWYwNy00M2QxLTk4ODUtNzk4ZDcwZTgxNGRkIiwicmVmcmVzaCI6ImI0MjBhMjI3LTU5ZjgtNDcxYy05MjliLTM5YmIyYzNjMWYyMSIsInN1YiI6IjRiYjhhODgxLWNmMmMtNDEzZi04ZjNlLTgzYmIwZmYzOTIyOCJ9.jtUrnxv5bf62DA2oPep-2ezx01qWMY8rWro6oJ4xKtpdGrGR0rvRD3obZYufl1LYvKl5s_lOiGm9skDd2GYVxe3wVS0Wwk5GOv3QQq6W2Yx2Ug1Rnzx0qhhg4ZtOTpcKF1KoMJgbrxg-ZjsD3MKdIg7-SLP-4jen3EwNZhYtg6wOAAspJYAEoQ2GjmD6QVyMN9Q9ZjP-zsQaGbwVSmFnhH5TocuOaH7EkcLlciAy0c1mY0TGUXOJk-v46irqlKeUN_ZT-O-F2OHCubWJnYnIKJnwdr0QvZGCML2GPmw_Wg9tDIhDbA5Ay8sbvlueFIYjaFDZvKI_dJDZ_60iAvOiaI_1zLLYcR1koWKhk69f0WcUpAXY9mBY4btyZ51wGPu3WhZBgJLNysAU6AdlAZF2LwVupBamxXSDPTd0FzkoNcJZno9gh09zptVqcTbDwoEPLRd8TaaeTRA4haQGGND4q5sM_3RHkXQgY9aBvM2YhEreUl4x4EkDO318WSaqgGM3zl823Y158mnHN7n5aqHqEp0s9JFQ8I5KQXivZlDiArxQye9D6iVdceamcUsbqc4vW8xaybw_V84c-v-wmfbGjfYF6aXOvzd3YHpIqjK7faUnbdXxUj0GNoP4OqZY7vGsjQLeylHHHSQecBHsNCh_1KRTdrSEjXR8XMBGq1ThjfE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"projectTitle\": \"TEST Update ke 3\",\r\n    \"projectDescription\": \"Testing EPIC\",\r\n    \"solutionCategory\": \"Network Service and Connectivity\",\r\n    \"percentWinning\": 80,\r\n    \"termOfPayment\": \"OTC Postpaid\",\r\n    \"estimateOTCPostpaidValue\": 250000000,\r\n    \"estimateValue\": 250000000,\r\n    \"estimateSubscribeStartDate\": \"2011-10-05T00:00:00.000Z\",\r\n    \"estimateDeliveryPeriod\": 2,\r\n    \"estimateSubscribePeriod\": 12,\r\n    \"contractCategory\": \"Own Channel\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9000/opportunities/v1/PRO-402789-5064730791",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"opportunities",
+						"v1",
+						"PRO-402789-5064730791"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get detail opportunity",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI5N2IzMzE5My00M2ZmLTRlNTgtOTEyNC1iM2E5YjlmNzJjMzQiLCJlbWFpbCI6IjkxMDEzM0B0ZWxrb20uY28uaWQiLCJleHAiOjE1OTk1ODczMDQsImlhdCI6MTU5OTQ2NzMwNCwiaXNzIjoidGVsa29tZGV2IiwianRpIjoiNDFmYzcyYjItN2FkNi00ZWU4LWI4ZWItNDgwZDk4NTMzNDBhIiwicmVmcmVzaCI6ImViMGYwMjE4LWVmMTYtNDM4Yy04YmE4LThjZjhiZTYxMmZkMCIsInN1YiI6IjBiNWEzYjllLTgyMjItNDM3OC04OTNiLTgxNDVlNjNmOGM4NCJ9.W-tRXFYQH73OyYXxz0kWm5kkhIhy-QV1HBQXPMAY44S3c807U2OKXiR-AEf3Wim39VkB3oWk48QrnQaeXD0sEDf9pJ45ocYBYaZLs1Uw7LlyakUNzEcja-GgooTuJ1oxqJFPdivPqldmBrPoi0oOlwNhZuV9yz_v9LNx-4UkDRDh8mB97jl3S3ULXYz1KvbjD9spwi4a0aClshGh0vLOpNhNYRwijgf9xYaK4sDfCUSj0TrtKNSMay8SrbK-26Vdutsw2T12TV9DFZOE-b92eeQHUB8EMOQeB_PUMdID70twt8bNaRyChP0oMLxLiw1Ghkk3_oPCFxnF3qpmzKPU143c_EClxPZvf4eBabxD6F9VgRoELSvsFqjjYjXCRPW-hg3rB_ZSHmyoMyIh88n77BZf7hxB6_NKk5DMGrHMDL7vs5lCvsERC1Ajza42MtfxwYPZIMe6n2CqDdXIIsjThRhrCQQL1vW9DiuN01Mj7ivmPooWqx_fqRkTccAXk1a8cGyvBrBbyDHxqlCgeqm3Yh3cS0IW37j2yuKF95TKappsIFEb02gIyA7f-waA7R9hmsbS1ZXNzWiVjhsTWUQ--mwXvl7WBLNxgyfdidK2BdbfvkUDaCcPv1BjMGjqsITcB8rRqNt538dWQcXaQ-8GT01-OLPrh7vpqwMO6D3OryI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api-dev.telkomdigitalsolution.co/opportunities/v1/PRO-910133-8566003946",
+					"protocol": "https",
+					"host": [
+						"api-dev",
+						"telkomdigitalsolution",
+						"co"
+					],
+					"path": [
+						"opportunities",
+						"v1",
+						"PRO-910133-8566003946"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
